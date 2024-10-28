@@ -14,7 +14,7 @@ public class Application {
 	private int age = 20;
 
 	public static void main(String[] args) {
-
+//変更
 		SpringApplication.run(Application.class, args);
 	}
 	@GetMapping("/name")
