@@ -1,5 +1,7 @@
 package raisetech.student.management2;
 
+import ch.qos.logback.core.util.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,12 +19,14 @@ public class Application {
 //変更
 		SpringApplication.run(Application.class, args);
 	}
-	@GetMapping("/name")
-	public String getName() {
-		return name;
+	@GetMapping("/studentInfo")
+	public String getInfo() {
+
+		return name + " " + age + "歳";
 	}
-	@PostMapping("/name")
-	public  void setName(String name) {
+	@PostMapping("/updateName")
+	public  void updateName(String name) {
+
 		this.name = name;
 	}
 }
