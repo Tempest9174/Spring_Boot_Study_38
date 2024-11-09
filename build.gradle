@@ -13,7 +13,11 @@ java {
 		languageVersion = JavaLanguageVersion.of(17)
 	}
 }
-
+configurations {{
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}}
 repositories {
 	mavenCentral()
 }
@@ -21,8 +25,14 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	runtimeOnly 'com.mysql:mysql-connector-j'
+	//SQL
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
 
+	//Lombpk
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	//便利機能
 	implementation 'org.apache.commons:commons-lang3:3.14.0'
 
 	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
@@ -32,4 +42,7 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+tasks.withType(JavaCompile) {
+	options.encoding = 'UTF-8'
 }
