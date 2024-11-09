@@ -6,6 +6,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import raisetech.student.management2.data.Course;
+import raisetech.student.management2.data.Student;
+import raisetech.student.management2.repositiry.StudentRepository;
 
 
 @SpringBootApplication
@@ -14,8 +17,7 @@ public class Application {
 
 	@Autowired
 	private StudentRepository repository;
-
-
+	//private CourseRepository courseRepository;
 
 
 	private String name = "yamada";
@@ -33,7 +35,10 @@ public class Application {
 		//表示
 		//return student.getName() + " " + student.getAge() + "歳";
 	}
-	//Student student = new Student();
-	//return name + " " + age + "歳";
 
+	@GetMapping("/courseList")
+	public List<Course> getCourseList() {
+		return repository.searchCourses();
+
+	}
 }
