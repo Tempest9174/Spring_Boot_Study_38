@@ -20,8 +20,8 @@ public class StudentController {
 
 
   @GetMapping("/studentList")
-  public List<Student> getStudentList() {
-    return service.serchStudentList();
+  public List<Student> gethStudentList() {
+    return service.searchStudentList();
     //変数でなくStudent studentなのか？
     //表示
     //return student.getName() + " " + student.getAge() + "歳";

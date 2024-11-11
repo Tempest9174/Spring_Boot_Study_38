@@ -15,8 +15,8 @@ import raisetech.student.management2.repositiry.StudentRepository;
 @RestController
 public class Application {
 
-	@Autowired
-	private StudentRepository repository;
+//	@Autowired
+//	private StudentRepository repository;
 	//private CourseRepository courseRepository;
 
 
@@ -28,17 +28,17 @@ public class Application {
 		SpringApplication.run(Application.class, args);
 	}
 
-	@GetMapping("/studentList")
-	public List<Student> getStudentList() {
-		return repository.search();
+	//@GetMapping("/studentList")
+	//public List<Student> getStudentList() {
+	//	return repository.search();
 		//変数でなくStudent studentなのか？
 		//表示
 		//return student.getName() + " " + student.getAge() + "歳";
 	}
 
-	@GetMapping("/courseList")
-	public List<Course> getCourseList() {
-		return repository.searchCourses();
+	//@GetMapping("/courseList")
+	//public List<Course> getCourseList() {
+	//	return repository.searchCourses();
 
-	}
-}
+	//}
+//}
