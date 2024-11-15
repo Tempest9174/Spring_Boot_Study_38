@@ -19,9 +19,9 @@ public class StudentService {
   }
 
   public List<Student> searchStudentList() {
-    return repository.search().stream()
-            .filter(student -> student.getAge() > 30).collect(Collectors.toList());
-  //return repository.search();
+ //   return repository.search().stream()
+ //           .filter(student -> student.getAge() > 30).collect(Collectors.toList());
+    return repository.search();
 //ここで何か処理を行う
   }
 
