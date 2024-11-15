@@ -24,23 +24,31 @@ public class StudentController {
   @GetMapping("/studentList")
   public List<StudentDetail> gethStudentList() {
     List<Student> students = service.searchStudentList();
+    //生徒リストを取得
     List<Course> courses = service.searchCourseList();
 
     List<StudentDetail> studentDetails = new ArrayList<>();
+    //生徒詳細リストを生成
     for (Student student : students) {
       StudentDetail studentDetail = new StudentDetail();
+      //生徒詳細を生成
       studentDetail.setStudent(student);
-
+      //生徒詳細に生徒をセット
       List<Course> convertStudentCourses = new ArrayList<>();
+      //生徒コースリストを生成
 //下の行コーディングsが怪しい
       for (Course course : courses) {
         if (student.getId().equals(course.getStudentId())) {
+          //生徒IDとコースの生徒IDが一致したら
           convertStudentCourses.add(course);
+
         }
       }
       //下何やってるって？
       studentDetail.setCourse(convertStudentCourses);
+      //生徒詳細に生徒コースをセット
       studentDetails.add(studentDetail);
+      //生徒詳細リストに生徒詳細を追加
     }
 
     return studentDetails  ;
