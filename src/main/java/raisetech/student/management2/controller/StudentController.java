@@ -22,7 +22,8 @@ public class StudentController {
 
 
   @GetMapping("/studentList")
-  public List<StudentDetail> gethStudentList() {
+  public List<StudentDetail> getStudentList() {
+    //StudentDetailにまとめるのが依然と異なる。
     List<Student> students = service.searchStudentList();
     //生徒リストを取得
     List<Course> courses = service.searchCourseList();
@@ -35,23 +36,24 @@ public class StudentController {
       studentDetail.setStudent(student);
       //生徒詳細に生徒をセット
       List<Course> convertStudentCourses = new ArrayList<>();
-      //生徒コースリストを生成
+      //convert生徒コースリストを生成
 //下の行コーディングsが怪しい
       for (Course course : courses) {
         if (student.getId().equals(course.getStudentId())) {
           //生徒IDとコースの生徒IDが一致したら
           convertStudentCourses.add(course);
+          //生徒コースリストにコースを追加??
 
         }
       }
       //下何やってるって？
       studentDetail.setCourse(convertStudentCourses);
-      //生徒詳細に生徒コースをセット
+      //生徒詳細にconvert生徒コースリストをセット
       studentDetails.add(studentDetail);
       //生徒詳細リストに生徒詳細を追加
     }
 
-    return studentDetails  ;
+    return studentDetails;
 
     //変数でなくStudent studentなのか？
     //表示
