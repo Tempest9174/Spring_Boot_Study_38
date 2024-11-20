@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import raisetech.student.management2.controller.converter.StudentConverter;
@@ -12,7 +14,7 @@ import raisetech.student.management2.data.Student;
 import raisetech.student.management2.domain.StudentDetail;
 import raisetech.student.management2.service.StudentService;
 
-@RestController
+@Controller
 public class StudentController {
   private StudentService service;
   private StudentConverter converter;
@@ -26,13 +28,14 @@ public class StudentController {
 
 
   @GetMapping("/studentList")
-  public List<StudentDetail> getStudentList() {
+  public String  getStudentList(Model model) {
     //StudentDetailにまとめるのが依然と異なる。
     List<Student> students = service.searchStudentList();
     //生徒リストを取得
     List<Course> courses = service.searchCourseList();
+    model.addAttribute("studentList",converter.convertStudentDetails(students, courses));//コースリストを取得
 
-    return converter.convertStudentDetails(students, courses);
+    return "studentList";
 
     //変数でなくStudent studentなのか？
     //表示
