@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import raisetech.student.management2.data.Course;
 import raisetech.student.management2.data.Student;
+import raisetech.student.management2.domain.StudentDetail;
 
 
 /**
@@ -22,5 +23,9 @@ public interface StudentRepository {
 //public interface CourseRepository {
   @Select("SELECT * FROM students_courses")
   List<Course> searchCourses();
+
+  //新規受講生を追加するSQLを発行
+  @Select("INSERT INTO students (stdentDetail) VALUES (#{studentDetail})")
+      void addStudent(Student student);
 
 }

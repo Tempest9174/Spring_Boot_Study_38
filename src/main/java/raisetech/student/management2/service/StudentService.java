@@ -1,7 +1,6 @@
 package raisetech.student.management2.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import raisetech.student.management2.data.Course;
@@ -28,5 +27,9 @@ public class StudentService {
   public List<Course> searchCourseList() {
     return repository.searchCourses();
 
+  }
+  public void  addStudentList( Student student) {
+
+     repository.addStudent(student);
   }
 }

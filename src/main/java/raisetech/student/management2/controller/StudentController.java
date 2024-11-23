@@ -62,8 +62,14 @@ public class StudentController {
   public String registerStudent(@ModelAttribute StudentDetail studentDetail, BindingResult result) {
     if (result.hasErrors()) {
       return "registerStudent";
+
     }
-    System.out.println(studentDetail.getStudent().getName() + "さんが新規受講生として登録されました。");
+    //生徒一覧に一件をformから追加する
+    //ここに何か処理入る。
+    //下のDetailもおかし？
+
+    service.addStudentList(studentDetail.getStudent());
+  //  System.out.println(studentDetail.getStudent().getName() + "さんが新規受講生として登録されました。");
     return "redirect:/studentList";
   }
 }
