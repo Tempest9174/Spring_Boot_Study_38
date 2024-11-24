@@ -55,6 +55,7 @@ public class StudentController {
   @GetMapping("/newStudent")
   public String newStudent(Model model) {
     model.addAttribute("studentDetail", new StudentDetail());
+    //まず描画の為、初期化
     return "registerStudent";
   }
 

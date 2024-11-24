@@ -1,6 +1,7 @@
 package raisetech.student.management2.repositiry;
 
 import java.util.List;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import raisetech.student.management2.data.Course;
@@ -25,7 +26,7 @@ public interface StudentRepository {
   List<Course> searchCourses();
 
   //新規受講生を追加するSQLを発行
-  @Select("INSERT INTO students (stdentDetail) VALUES (#{studentDetail})")
+  @Insert("INSERT INTO students (stdentDetail) ")
       void addStudent(Student student);
 
 }
