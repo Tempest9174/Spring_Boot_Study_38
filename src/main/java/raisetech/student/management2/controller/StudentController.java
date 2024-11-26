@@ -56,6 +56,7 @@ public class StudentController {
   public String newStudent(Model model) {
     model.addAttribute("studentDetail", new StudentDetail());
     //まず描画の為、初期化
+    //addAtriの？
     return "registerStudent";
   }
 
@@ -69,7 +70,7 @@ public class StudentController {
     //ここに何か処理入る。
     //下のDetailもおかし？
 
-    service.addStudentList(studentDetail.getStudent());
+    service.registerStudent(studentDetail);
   //  System.out.println(studentDetail.getStudent().getName() + "さんが新規受講生として登録されました。");
     return "redirect:/studentList";
   }

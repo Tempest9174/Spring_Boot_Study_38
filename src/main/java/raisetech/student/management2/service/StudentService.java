@@ -3,8 +3,10 @@ package raisetech.student.management2.service;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import raisetech.student.management2.data.Course;
 import raisetech.student.management2.data.Student;
+import raisetech.student.management2.domain.StudentDetail;
 import raisetech.student.management2.repositiry.StudentRepository;
 
 @Service
@@ -28,8 +30,14 @@ public class StudentService {
     return repository.searchCourses();
 
   }
-  public void  addStudentList( Student student) {
-
-     repository.addStudent(student);
+//  public void  addStudentList( Student student) {
+//
+  //   repository.addStudent(student);
+  //}
+  @Transactional
+  public void registerStudent(StudentDetail studentDetail){
+    repository.registerStudent(studentDetail.getStudent());
   }
+//TODO: コース情報の登録も行う
 }
+

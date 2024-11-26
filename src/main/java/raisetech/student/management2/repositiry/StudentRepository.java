@@ -3,6 +3,7 @@ package raisetech.student.management2.repositiry;
 import java.util.List;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import raisetech.student.management2.data.Course;
 import raisetech.student.management2.data.Student;
@@ -26,7 +27,8 @@ public interface StudentRepository {
   List<Course> searchCourses();
 
   //新規受講生を追加するSQLを発行
-  @Insert("INSERT INTO students (stdentDetail) ")
-      void addStudent(Student student);
+  @Insert("INSERT INTO students(name, kana_name,nickname,email, area, age, sex, remark, isDeleted) values( #{name}, #{nickName}, #{kanaName}, #{email}, #{area}, #{age}, #{sex}, #{remark}, false)")
+  @Options(useGeneratedKeys = true, keyProperty = "id")
+  void registerStudent(Student student);
 
 }
