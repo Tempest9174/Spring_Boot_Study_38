@@ -57,7 +57,7 @@ public class StudentController {
     model.addAttribute("studentDetail", studentDetail);
     return "registerStudent";
   }
-
+//難しい箇所👆
 
 //  @GetMapping("/newStudent")
 //  public String newStudent(Model model) {
@@ -71,6 +71,7 @@ public class StudentController {
 //上のメソッド何してるか？
   @PostMapping("/registerStudent")
   public String registerStudent(@ModelAttribute StudentDetail studentDetail, BindingResult result) {
+    System.out.println(result);
     if (result.hasErrors()) {
       return "registerStudent";
 
@@ -80,7 +81,7 @@ public class StudentController {
     //下のDetailもおかし？
 
     service.registerStudent(studentDetail);
-  //  System.out.println(studentDetail.getStudent().getName() + "さんが新規受講生として登録されました。");
+   System.out.println(studentDetail.getStudent().getName() + "さんが新規受講生として登録されました。");
     return "redirect:/studentList";
   }
 }
