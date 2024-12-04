@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org" lang="ja">
 <head>
   <meta charset="UTF-8">
   <title>受講生登録</title>
 </head>
 <body>
 <h1>受講生登録</h1>
+
   <form th:action="@{/registerStudent}" th:object="${studentDetail}" method="post">
   <div>
     <label for="name">名前</label>
@@ -34,11 +35,15 @@
 
     <div>
       <label for="sex">性別</label>
-      <input type="text" id="sex" th:field="*{student.sex}" />
+      <select id="sex" th:field="*{student.sex}" />
+        <option> value="男性">男性</option>
+        <option> value="女性">女性</option>
+        <option> value="回答なし">回答なし</option>
+      </select>
     </div>
     <div>
       <label for="remark">備考</label>
-      <input type="text" id="remark" th:field="*{student.remark}"  />
+      <textarea type="text" id="remark" th:field="*{student.remark}" ></textarea>
     </div>
     <div th:each="course, stat : *{studentsCourses}">
       <label for="courseName" th:for="studentCourse.__${stat.index}__.courseName">受講コース名</label>

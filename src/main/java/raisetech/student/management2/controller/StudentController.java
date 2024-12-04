@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import raisetech.student.management2.controller.converter.StudentConverter;
 import raisetech.student.management2.data.StudentsCourses;
@@ -59,15 +60,6 @@ public class StudentController {
   }
 //難しい箇所👆
 
-//  @GetMapping("/newStudent")
-//  public String newStudent(Model model) {
-//    StudentDetail studentDetail = new StudentDetail();
-//    studentDetail.setStudentsCourses(Arrays.asList(new StudentsCourses()));
-//    model.addAttribute("studentDetail", studentDetail);
-    //まず描画の為、初期化
-    //addAtriの？
-//    return "registerStudent";
-//  }
 //上のメソッド何してるか？
   @PostMapping("/registerStudent")
   public String registerStudent(@ModelAttribute StudentDetail studentDetail, BindingResult result) {
@@ -76,12 +68,36 @@ public class StudentController {
       return "registerStudent";
 
     }
+    service.updateStudent(studentDetail);
+    return "redirect:/studentList";
+  }
     //生徒一覧に一件をformから追加する
     //ここに何か処理入る。
     //下のDetailもおかし？
 
-    service.registerStudent(studentDetail);
+    @GetMapping("/student/{id}")
+    public String getStudent(@PathVariable String id, Model model) {
+      StudentDetail studentDetail = service.searchStudent(id);
+      //studentDetail.setStudentsCourses(Arrays.asList(new StudentsCourses()));
+      model.addAttribute("studentDetail", studentDetail);
+      return "updaterStudent";
+    }
+//難しい箇所👆
+
+//上のメソッド何してるか？
+    @PostMapping("/updateStudent")
+    public String updateStudent(@ModelAttribute StudentDetail studentDetail, BindingResult result) {
+
+      if (result.hasErrors()) {
+        return "updateStudent";
+      }
+        service.updateStudent(studentDetail);
    System.out.println(studentDetail.getStudent().getName() + "さんが新規受講生として登録されました。");
     return "redirect:/studentList";
   }
+  @GetMapping("/courseList/{studentId}")
+  public List<StudentsCourses> getCourseList(@PathVariable Long studentId) {
+    return service.searchCourseList(studentId);
+  }
 }
+

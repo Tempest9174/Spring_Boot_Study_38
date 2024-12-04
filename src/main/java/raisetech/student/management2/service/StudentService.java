@@ -28,17 +28,25 @@ public class StudentService {
  //   レッスン24：return repository.search().stream()
  //           .filter(student -> student.getAge() > 30).collect(Collectors.toList());
     return repository.search();
-//ここで何か処理を行う
   }
+
+  public  StudentDetail searchStudent(String id){
+
+    Student student = repository.searchStudent(id);
+    List<StudentsCourses> studentsCourses = repository.searchStudentCourses(student.getId());
+    StudentDetail studentDetail = new StudentDetail();
+    studentDetail.setStudent(student);
+    studentDetail.setStudentsCourses(studentsCourses);
+    return studentDetail;
+  }
+
 
   public List<StudentsCourses> searchCourseList() {
-    return repository.searchCourses();
+    return repository.searchStudentCourses();
 
   }
-//  public void  addStudentList( Student student) {
-//
-  //   repository.addStudent(student);
-  //}
+
+
   @Transactional
   public void registerStudent(StudentDetail studentDetail){
     repository.registerStudent(studentDetail.getStudent());
@@ -51,5 +59,17 @@ public class StudentService {
     }
   }
 //TODO: コース情報の登録も行う
-}
+
+//TODO: 学生情報の更新処理を行う
+  @Transactional
+  public void updateStudent(StudentDetail studentDetail){
+    repository.updateStudent(studentDetail.getStudent());
+    //学生の登録情報を更新処理する
+    for (StudentsCourses studentsCourses : studentDetail.getStudentsCourses()) {
+      repository.updateStudentsCourses(studentsCourses);
+    }
+
+    }
+  }
+
 
