@@ -27,8 +27,13 @@ public interface StudentRepository {
   @Select("SELECT * FROM students_courses")
   List<StudentsCourses> searchStudentCoursesList();
 //}
+
   @Select("SELECT * FROM students_courses where student_id = #{studentId}")
   List<StudentsCourses> searchStudentCourses(String studentId);
+
+  //@Select("SELECT * FROM students_courses where student_id = #{studentId}")
+  //List<StudentsCourses> searchStudentCourses(String studentId);
+//上と競合するのでコメントアウト
 
   //新規受講生を追加するSQLを発行
   @Insert("INSERT INTO students(name, kana_name,nickname,email, area, age, sex, remark, isDeleted) values( #{name}, #{nickName}, #{kanaName}, #{email}, #{area}, #{age}, #{sex}, #{remark}, false)")
@@ -43,11 +48,11 @@ public interface StudentRepository {
   void registerStudentsCourses(StudentsCourses studentsCourses);
 
   //更新SQLを発行
-  @Update("UPDATE students SET (name = #{name}, kana_name = #{kanaName}, nickname = #{nickName}, email = #{email}, area = #{area}, age = #{age}, sex = #{sex}, remark = #{remark}, is_deleted = #{isDeleted}) WHERE id = #{id}")
+  @Update("UPDATE students SET name = #{name}, kana_name = #{kanaName}, nickname = #{nickName}, email = #{email}, area = #{area}, age = #{age}, sex = #{sex}, remark = #{remark}, isDeleted = #{isDeleted} WHERE id = #{id}")
   //@Optionsいらない
   void updateStudent(Student student);
 
-  @Update("UPDATE students_courses set(course_name = #{courseName where id = #{id}")
+  @Update("UPDATE students_courses set course_name = #{courseName} where id = #{id}")
   void updateStudentsCourses(StudentsCourses studentsCourses);
 
 

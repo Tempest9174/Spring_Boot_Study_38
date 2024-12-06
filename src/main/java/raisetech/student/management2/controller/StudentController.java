@@ -80,9 +80,9 @@ public class StudentController {
       StudentDetail studentDetail = service.searchStudent(id);
       //studentDetail.setStudentsCourses(Arrays.asList(new StudentsCourses()));
       model.addAttribute("studentDetail", studentDetail);
-      return "updaterStudent";
+      return "updateStudent";
     }
-//難しい箇所👆
+//難しい箇所👆AIツールの使い方
 
 //上のメソッド何してるか？
     @PostMapping("/updateStudent")
@@ -91,13 +91,14 @@ public class StudentController {
       if (result.hasErrors()) {
         return "updateStudent";
       }
-        service.updateStudent(studentDetail);
+   service.updateStudent(studentDetail);
    System.out.println(studentDetail.getStudent().getName() + "さんが新規受講生として登録されました。");
     return "redirect:/studentList";
   }
   @GetMapping("/courseList/{studentId}")
   public List<StudentsCourses> getCourseList(@PathVariable Long studentId) {
-    return service.searchCourseList(studentId);
+    return service.searchCourseList();
+    //引数消した
   }
 }
 

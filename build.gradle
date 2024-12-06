@@ -28,7 +28,7 @@ dependencies {
 	//SQL
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
 	//Thymeleaf
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf3.3.3'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	//バージョン3.3.3いらないかも
 
 	//Lombpk

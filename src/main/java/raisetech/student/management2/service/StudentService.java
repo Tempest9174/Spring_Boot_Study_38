@@ -39,10 +39,10 @@ public class StudentService {
     studentDetail.setStudentsCourses(studentsCourses);
     return studentDetail;
   }
-
+//サーチ処理を行う（コントローラ）
 
   public List<StudentsCourses> searchCourseList() {
-    return repository.searchStudentCourses();
+    return repository.searchStudentCoursesList();
 
   }
 
@@ -66,6 +66,8 @@ public class StudentService {
     repository.updateStudent(studentDetail.getStudent());
     //学生の登録情報を更新処理する
     for (StudentsCourses studentsCourses : studentDetail.getStudentsCourses()) {
+    //  studentsCourses.setStudentId(studentDetail.getStudent().getId());
+    //駄目な実装
       repository.updateStudentsCourses(studentsCourses);
     }
 
