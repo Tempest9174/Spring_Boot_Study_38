@@ -63,12 +63,13 @@ public class StudentController {
 //上のメソッド何してるか？
   @PostMapping("/registerStudent")
   public String registerStudent(@ModelAttribute StudentDetail studentDetail, BindingResult result) {
-    System.out.println(result);
+   // System.out.println(result);
     if (result.hasErrors()) {
+      System.out.println("エラーが発生しました。");
       return "registerStudent";
 
     }
-    service.updateStudent(studentDetail);
+    service.registerStudent(studentDetail);
     return "redirect:/studentList";
   }
     //生徒一覧に一件をformから追加する
