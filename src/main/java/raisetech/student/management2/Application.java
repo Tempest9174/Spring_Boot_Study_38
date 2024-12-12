@@ -1,14 +1,8 @@
 package raisetech.student.management2;
 
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import raisetech.student.management2.data.Course;
-import raisetech.student.management2.data.Student;
-import raisetech.student.management2.repositiry.StudentRepository;
 
 
 @SpringBootApplication
@@ -37,7 +31,7 @@ public class Application {
 	}
 
 	//@GetMapping("/courseList")
-	//public List<Course> getCourseList() {
+	//public List<StudentsCourses> getCourseList() {
 	//	return repository.searchCourses();
 
 	//}

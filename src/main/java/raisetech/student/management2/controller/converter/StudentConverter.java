@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
-import raisetech.student.management2.data.Course;
+import raisetech.student.management2.data.StudentsCourses;
 import raisetech.student.management2.data.Student;
 import raisetech.student.management2.domain.StudentDetail;
 
 @Component
 public class StudentConverter {
   public List<StudentDetail> convertStudentDetails(List<Student> students,
-      List<Course> courses) {
+      List<StudentsCourses> cours) {
     List<StudentDetail> studentDetails = new ArrayList<>();
     //生徒詳細リストを生成
     //生徒詳細を生成
@@ -28,12 +28,12 @@ public class StudentConverter {
       studentDetail.setStudent(student);
 
 
-      List<Course> convertStudentCourses = courses.stream()
+      List<StudentsCourses> convertStudentCours = cours.stream()
           .filter(course -> student.getId().equals(course.getStudentId()))
           .collect(Collectors.toList());
 
 
-      studentDetail.setCourse(convertStudentCourses);
+      studentDetail.setStudentsCourses(convertStudentCours);
       studentDetails.add(studentDetail);
     });
     return studentDetails;
