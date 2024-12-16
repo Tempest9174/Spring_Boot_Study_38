@@ -15,7 +15,7 @@ import raisetech.student.management2.data.StudentsCourses;
 import raisetech.student.management2.data.Student;
 import raisetech.student.management2.domain.StudentDetail;
 import raisetech.student.management2.service.StudentService;
-
+//変更可
 @Controller
 public class StudentController {
   private StudentService service;
