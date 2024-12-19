@@ -48,7 +48,7 @@ public class StudentService {
 
 
   @Transactional
-  public void registerStudent(StudentDetail studentDetail){
+  public StudentDetail registerStudent(StudentDetail studentDetail){
     repository.registerStudent(studentDetail.getStudent());
     for (StudentsCourses studentsCourse : studentDetail.getStudentsCourses()) {
       studentsCourse.setStudentId(studentDetail.getStudent().getId());
@@ -57,6 +57,7 @@ public class StudentService {
 
       repository.registerStudentsCourses(studentsCourse);
     }
+    return studentDetail;
   }
 //TODO: コース情報の登録も行う
 
