@@ -13,22 +13,42 @@ import raisetech.student.management2.data.Student;
 /**
  * 受講生情報を扱うレポジトリ
  * 全権検索や単一検索
+ * 受講生テーブルと受講生コース情報テーブルと紐づくレポジトリ
  */
 @Mapper
 public interface StudentRepository {
-  @Select("SELECT * FROM students")
 
+
+  /**
+   * 受講生の全件検索
+   * @return 受講生一覧(全件)
+   */
+  @Select("SELECT * FROM students")
   //@Select("SELECT * FROM students where isDeleted = false")
   List<Student> search();
 
+  /**
+   * 受講生の単一検索
+   * @param  id 受講生ID
+   * @return 受講生一覧()
+   */
   @Select("SELECT * FROM students where id = #{id}")
   Student searchStudent(String id);
 
-
+  /**
+   * 受講生コース情報の全件検索
+   *
+   * @return 受講生コースの一覧
+   */
   @Select("SELECT * FROM students_courses")
   List<StudentsCourses> searchStudentCoursesList();
-//}
 
+  /**
+   *
+   *
+   * @param studentId
+   * @return
+   */
   @Select("SELECT * FROM students_courses where student_id = #{studentId}")
   List<StudentsCourses> searchStudentCourses(String studentId);
 
