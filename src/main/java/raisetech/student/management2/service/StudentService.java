@@ -6,9 +6,11 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import raisetech.student.management2.controller.converter.StudentConverter;
 import raisetech.student.management2.data.StudentsCourses;
 import raisetech.student.management2.data.Student;
 import raisetech.student.management2.domain.StudentDetail;
@@ -22,9 +24,13 @@ import raisetech.student.management2.repositiry.StudentRepository;
 public class StudentService {
 
   private StudentRepository repository;
+  private StudentConverter converter;
+
 
   @Autowired
-  public StudentService(StudentRepository repository) {
+  public StudentService(StudentRepository repository, StudentConverter converter) {
+    this.converter = converter;
+
     this.repository = repository;
   }
 
@@ -33,15 +39,17 @@ public class StudentService {
    *  *全件検索の為、条件指定は行いません。
    * @return 受講生一覧(全件)
    */
-  public List<Student> searchStudentList() {
+  public List<StudentDetail> searchStudentList() {
  //   レッスン24：return repository.search().stream()
- //           .filter(student -> student.getAge() > 30).collect(Collectors.toList());
-    return repository.search();
+    List<Student> studentList = repository.search();
+    //.filter(student -> student.getAge() > 30).collect(Collectors.toList());
+    List<StudentsCourses> coursesList = repository.searchStudentCoursesList();
+    return converter.convertStudentDetails(studentList, coursesList);
   }
 
   /**
    * 受講生検索
-   * IDに紐づく受講生情報を主t九したあと、その受講生に紐づく受講生コース情報を取得し設定
+   * IDに紐づく受講生情報を取得したあと、その受講生に紐づく受講生コース情報を取得し設定
    * @param id 受講生ID
    * @return 受講生
    */
@@ -49,13 +57,16 @@ public class StudentService {
 
     Student student = repository.searchStudent(id);
     List<StudentsCourses> studentsCourses = repository.searchStudentCourses(student.getId());
-    StudentDetail studentDetail = new StudentDetail();
-    studentDetail.setStudent(student);
-    studentDetail.setStudentsCourses(studentsCourses);
-    return studentDetail;
+      return new StudentDetail(student, studentsCourses);
   }
 //サーチ処理を行う（コントローラ）
 
+  /**
+   * 受講生コース検索を行う
+   * 全件検索を行うため条件指定は行わない
+   *
+   * @return
+   */
   public List<StudentsCourses> searchCourseList() {
     return repository.searchStudentCoursesList();
 

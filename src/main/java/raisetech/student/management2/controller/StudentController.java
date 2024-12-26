@@ -29,18 +29,16 @@ import raisetech.student.management2.service.StudentService;
 @RestController
 public class StudentController {
   private StudentService service;
-  private StudentConverter converter;
 
   /**
    * コンストラクタ
    * @param service
-   * @param converter
+   * @param
    */
 
   @Autowired
-  public StudentController(StudentService service, StudentConverter converter) {
+  public StudentController(StudentService service) {
     this.service = service;
-    this.converter = converter;
   }
 
   /**
@@ -51,12 +49,10 @@ public class StudentController {
   @GetMapping("/studentList")
   public List<StudentDetail>  getStudentList() {
     //StudentDetailにまとめるのが依然と異なる。
-    List<Student> students = service.searchStudentList();
-    //生徒リストを取得
-    List<StudentsCourses> cours = service.searchCourseList();
+
     // model.addAttribute("studentList",);//コースリストを取得
 
-    return converter.convertStudentDetails(students, cours);
+    return service.searchStudentList();
 
     //変数でなくStudent studentなのか？
     //表示

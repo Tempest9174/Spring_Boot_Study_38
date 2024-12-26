@@ -38,16 +38,16 @@ public interface StudentRepository {
   /**
    * 受講生コース情報の全件検索
    *
-   * @return 受講生コースの一覧
+   * @return 受講生コースの一覧（全件）
    */
   @Select("SELECT * FROM students_courses")
   List<StudentsCourses> searchStudentCoursesList();
 
   /**
+   * 受講生IDに紐づく受講生コース情報を検索します。
    *
-   *
-   * @param studentId
-   * @return
+   * @param studentId 受講生ID
+   * @return 受講生IDに紐づく受講生コース情報
    */
   @Select("SELECT * FROM students_courses where student_id = #{studentId}")
   List<StudentsCourses> searchStudentCourses(String studentId);
