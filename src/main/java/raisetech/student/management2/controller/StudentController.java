@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import raisetech.student.management2.controller.converter.StudentConverter;
@@ -42,7 +43,7 @@ public class StudentController {
   }
 
   /**
-   * 受講生一覧検索
+   * 受講生詳細の一覧検索
    * 全件検索を行う。条件指定は行わないもの。
    * @return 受講生一覧（全件）
    */
@@ -60,10 +61,10 @@ public class StudentController {
   }
 
   /**
-   * 受講生検索を行う
+   * 受講生詳細検索を行う
    * IDに紐づくに似の受講生の情報を取得する
    * @param id 受講生ID
-   * @return 受講生
+   * @return 受講生詳細
    */
   @GetMapping("/student/{id}")
   public StudentDetail getStudent(@PathVariable String id) {
@@ -91,6 +92,14 @@ public class StudentController {
 //難しい箇所👆登録処理が実装＞＞不要
 
   //上のメソッド何してるか？
+
+  /**
+   * 受講生詳細の登録を行う
+   * @param studentDetail 受講生詳細
+   * @return 実行結果
+   */
+
+
   @PostMapping("/registerStudent")
   public ResponseEntity<StudentDetail> registerStudent(@RequestBody StudentDetail studentDetail) {
 
@@ -105,7 +114,15 @@ public class StudentController {
 
 
   //下、レッスン33
-  @PostMapping("/updateStudent")
+
+  /**
+   * 受講生詳細を更新します。
+   * キャンセルフラグの更新もここで行う（論理削除）
+   * @param studentDetail 受講生詳細
+   * @return 実行結果
+   */
+
+  @PutMapping("/updateStudent")
   public ResponseEntity<String> updateStudent(@RequestBody StudentDetail studentDetail) {
 
     service.updateStudent(studentDetail);

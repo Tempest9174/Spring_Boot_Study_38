@@ -41,7 +41,7 @@ public interface StudentRepository {
    * @return 受講生コースの一覧（全件）
    */
   @Select("SELECT * FROM students_courses")
-  List<StudentsCourses> searchStudentCoursesList();
+  List<StudentsCourses> searchStudentCourseList();
 
   /**
    * 受講生IDに紐づく受講生コース情報を検索します。
@@ -50,33 +50,54 @@ public interface StudentRepository {
    * @return 受講生IDに紐づく受講生コース情報
    */
   @Select("SELECT * FROM students_courses where student_id = #{studentId}")
-  List<StudentsCourses> searchStudentCourses(String studentId);
+  List<StudentsCourses> searchStudentCourse(String studentId);
 
   //@Select("SELECT * FROM students_courses where student_id = #{studentId}")
   //List<StudentsCourses> searchStudentCourses(String studentId);
 //上と競合するのでコメントアウト
+
+  /**
+   * 受講生を新規登録します。
+   * IDに関しては自動採番
+   * @param student 受講生
+   */
 
   //新規受講生を追加するSQLを発行
   @Insert("INSERT INTO students(name, kana_name, nickname, email, area, age, sex, remark, isDeleted) values( #{name},  #{kanaName}, #{nickName},#{email}, #{area}, #{age}, #{sex}, #{remark}, false)")
   @Options(useGeneratedKeys = true, keyProperty = "id")
   void registerStudent(Student student);
 
-
+  /**
+   * 受講生コース情報を新規登録します。
+   * IDに関しては自動採番
+   * @param studentsCourse 受講生コース情報
+   */
 
   @Insert("INSERT INTO students_courses(student_id, course_name, course_start_at, course_end_at)"
   + "values(#{studentId}, #{courseName}, #{courseStartAt}, #{courseEndAt})")
   @Options(useGeneratedKeys = true, keyProperty = "id")
-  void registerStudentsCourses(StudentsCourses studentsCourses);
+  void registerStudentCourse(StudentsCourses studentsCourse);
+
+
+  /**
+   * 受講生詳細を更新します。
+   *
+   * @param student 受講生
+   */
 
   //更新SQLを発行
   @Update("UPDATE students SET name = #{name}, kana_name = #{kanaName}, nickname = #{nickName}, email = #{email}, area = #{area}, age = #{age}, sex = #{sex}, remark = #{remark}, isDeleted = #{isDeleted} WHERE id = #{id}")
   //@Optionsいらない
   void updateStudent(Student student);
 
+
+
+  /**
+      * 受講生コース情報のコース名を更新します。
+      *
+      * @param studentCourse 受講生コース情報
+   */
+
   @Update("UPDATE students_courses set course_name = #{courseName} where id = #{id}")
-  void updateStudentsCourses(StudentsCourses studentsCourses);
-
-
-
-
+  void updateStudentCourse(StudentsCourses studentCourse);
 }
