@@ -31,7 +31,7 @@ public class Application {
 	}
 
 	//@GetMapping("/courseList")
-	//public List<StudentsCourses> getCourseList() {
+	//public List<StudentsCourse> getCourseList() {
 	//	return repository.searchCourses();
 
 	//}

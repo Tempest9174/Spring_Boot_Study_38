@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import raisetech.student.management2.controller.converter.StudentConverter;
-import raisetech.student.management2.data.StudentsCourses;
+import raisetech.student.management2.data.StudentsCourse;
 import raisetech.student.management2.data.Student;
 import raisetech.student.management2.domain.StudentDetail;
 import raisetech.student.management2.repositiry.StudentRepository;
@@ -40,7 +40,7 @@ public class StudentService {
  //   レッスン24：return repository.search().stream()
     List<Student> studentList = repository.search();
     //.filter(student -> student.getAge() > 30).collect(Collectors.toList());
-    List<StudentsCourses> studentCourseList = repository.searchStudentCourseList();
+    List<StudentsCourse> studentCourseList = repository.searchStudentCourseList();
     return converter.convertStudentDetails(studentList, studentCourseList);
   }
 
@@ -53,7 +53,7 @@ public class StudentService {
   public  StudentDetail searchStudent(String id){
 
     Student student = repository.searchStudent(id);
-    List<StudentsCourses> studentCourse = repository.searchStudentCourse(student.getId());
+    List<StudentsCourse> studentCourse = repository.searchStudentCourse(student.getId());
       return new StudentDetail(student, studentCourse);
   }
 //サーチ処理を行う（コントローラ）
@@ -64,7 +64,7 @@ public class StudentService {
    *
    * @return
    */
-  public List<StudentsCourses> searchCourseList() {
+  public List<StudentsCourse> searchCourseList() {
     return repository.searchStudentCourseList();
 
   }
@@ -98,7 +98,7 @@ public class StudentService {
    * @param studentsCourse 受講生コース情報
    * @param student 受講生
    */
-  private static void initStudentCourse(StudentsCourses studentsCourse, Student student) {
+  private static void initStudentCourse(StudentsCourse studentsCourse, Student student) {
     studentsCourse.setStudentId(student.getId());
     Date now = Date.valueOf(now());
 

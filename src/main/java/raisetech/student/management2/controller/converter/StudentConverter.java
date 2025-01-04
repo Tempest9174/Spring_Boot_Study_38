@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
-import raisetech.student.management2.data.StudentsCourses;
+import raisetech.student.management2.data.StudentsCourse;
 import raisetech.student.management2.data.Student;
 import raisetech.student.management2.domain.StudentDetail;
 
@@ -23,7 +23,7 @@ public class StudentConverter {
    * @return 受講生詳細情報のリスト
    */
   public List<StudentDetail> convertStudentDetails(List<Student> studentList,
-      List<StudentsCourses> studentCourseList) {
+      List<StudentsCourse> studentCourseList) {
     List<StudentDetail> studentDetails = new ArrayList<>();
     //生徒詳細リストを生成
     //生徒詳細を生成
@@ -40,7 +40,7 @@ public class StudentConverter {
       studentDetail.setStudent(student);
 
 
-      List<StudentsCourses> convertStudentCourseList = studentCourseList.stream()
+      List<StudentsCourse> convertStudentCourseList = studentCourseList.stream()
           .filter(course -> student.getId().equals(course.getStudentId()))
           .collect(Collectors.toList());
 

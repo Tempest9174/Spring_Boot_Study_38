@@ -1,24 +1,16 @@
 
 package raisetech.student.management2.controller;
 
-import java.util.Arrays;
 import java.util.List;
-import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import raisetech.student.management2.controller.converter.StudentConverter;
-import raisetech.student.management2.data.StudentsCourses;
-import raisetech.student.management2.data.Student;
+import raisetech.student.management2.data.StudentsCourse;
 import raisetech.student.management2.domain.StudentDetail;
 import raisetech.student.management2.service.StudentService;
 
@@ -69,7 +61,7 @@ public class StudentController {
   @GetMapping("/student/{id}")
   public StudentDetail getStudent(@PathVariable String id) {
 
-    //studentDetail.setStudentsCourses(Arrays.asList(new StudentsCourses()));
+    //studentDetail.setStudentsCourses(Arrays.asList(new StudentsCourse()));
     return service.searchStudent(id);
   }
 //難しい箇所👆AIツールの使い方
@@ -77,7 +69,7 @@ public class StudentController {
 
 
   @GetMapping("/courseList")
-  public List<StudentsCourses> getCourseList() {
+  public List<StudentsCourse> getCourseList() {
     return service.searchCourseList();
 
   }
@@ -85,7 +77,7 @@ public class StudentController {
 //  @GetMapping("/newStudent")
 //  public String newStudent(Model model) {
 //    StudentDetail studentDetail = new StudentDetail();
-//    studentDetail.setStudentsCourses(Arrays.asList(new StudentsCourses()));
+//    studentDetail.setStudentsCourses(Arrays.asList(new StudentsCourse()));
 //    model.addAttribute("studentDetail", studentDetail);
 //    return "registerStudent";
 //  }
@@ -132,7 +124,7 @@ public class StudentController {
 
 
   @GetMapping("/courseList/{studentId}")
-  public List<StudentsCourses> getCourseList(@PathVariable Long studentId) {
+  public List<StudentsCourse> getCourseList(@PathVariable Long studentId) {
     return service.searchCourseList();
     //引数消した
   }
