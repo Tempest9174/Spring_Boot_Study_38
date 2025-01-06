@@ -1,4 +1,4 @@
-package raisetech.student.management2.repositiry;
+package raisetech.student.management2.repository;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Insert;
@@ -23,7 +23,7 @@ public interface StudentRepository {
    * 受講生の全件検索
    * @return 受講生一覧(全件)
    */
-  @Select("SELECT * FROM students")
+  // @Select("SELECT * FROM students")
   //@Select("SELECT * FROM students where isDeleted = false")
   List<Student> search();
 
@@ -32,7 +32,7 @@ public interface StudentRepository {
    * @param  id 受講生ID
    * @return 受講生一覧()
    */
-  @Select("SELECT * FROM students where id = #{id}")
+  //@Select("SELECT * FROM students where id = #{id}")
   Student searchStudent(String id);
 
   /**

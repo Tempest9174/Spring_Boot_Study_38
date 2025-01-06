@@ -11,7 +11,7 @@ import raisetech.student.management2.controller.converter.StudentConverter;
 import raisetech.student.management2.data.StudentsCourse;
 import raisetech.student.management2.data.Student;
 import raisetech.student.management2.domain.StudentDetail;
-import raisetech.student.management2.repositiry.StudentRepository;
+import raisetech.student.management2.repository.StudentRepository;
 
 /**
  * 受講生情報を取り扱うサービス
