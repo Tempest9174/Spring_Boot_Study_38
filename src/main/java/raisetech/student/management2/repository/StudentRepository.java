@@ -35,6 +35,7 @@ public interface StudentRepository {
   //@Select("SELECT * FROM students where id = #{id}")
   Student searchStudent(String id);
 
+
   /**
    * 受講生コース情報の全件検索
    *

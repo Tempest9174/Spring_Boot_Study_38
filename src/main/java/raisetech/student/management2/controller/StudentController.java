@@ -61,13 +61,12 @@ public class StudentController {
    * @return 受講生詳細
    */
   @GetMapping("/student/{id}")
-  public StudentDetail getStudent(@PathVariable @Size(min=1, max=2, message="入力して！！！！！！！！！！！！！！") String id) {
+  public StudentDetail getStudent(@PathVariable @Size(min=1, max=2, message="入力して！！！") String id) {
 
     //studentDetail.setStudentsCourses(Arrays.asList(new StudentsCourse()));
     return service.searchStudent(id);
   }
 //難しい箇所👆AIツールの使い方
-
 
 
   @GetMapping("/courseList")

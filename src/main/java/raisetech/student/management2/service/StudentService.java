@@ -57,7 +57,9 @@ public class StudentService {
       return new StudentDetail(student, studentCourse);
   }
 //サーチ処理を行う（コントローラ）
-
+ // public StudentsCourse courseViewList(){
+ //   return repository.overViewCourse();
+ // }
   /**
    * 受講生コース検索を行う
    * 全件検索を行うため条件指定は行わない

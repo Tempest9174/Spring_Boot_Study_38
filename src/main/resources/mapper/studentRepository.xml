@@ -26,7 +26,7 @@
   </select>
 
 
-  <!--新規受講生コース渡欧六   -->
+  <!--新規受講生コース登録   -->
   <insert id="registerStudentCourse" parameterType="raisetech.student.management2.data.StudentsCourse" useGeneratedKeys="true" keyProperty="id">
     INSERT INTO students_courses (student_id, course_name, course_start_at, course_end_at)
     VALUES (#{studentId}, #{courseName}, #{courseStartAt}, #{courseEndAt})
