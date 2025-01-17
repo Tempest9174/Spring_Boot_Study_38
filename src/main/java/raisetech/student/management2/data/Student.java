@@ -20,17 +20,15 @@ public class Student {
 
   private String id;
   @NotBlank(message = "名前を入力してください")
-  @Size(min = 3, max = 20, message = "名前は二文字以上20字以内で入力してください")
-  @Pattern(
-      regexp = "^[\\p{Script=Han}]{2,20}$",
-      message = "名前は漢字2字以上20字以下で入力してください")
-  @NotBlank
+  @Size(max = 10, message = "名前は10字以内で入力してください")
+  //@Pattern(
+  //    regexp = "^[\\p{Script=Han}]{2,20}$",
+  //    message = "名前は漢字2字以上20字以下で入力してください")
   private String name;
-  @NotBlank
   private String nickName;
-  @NotBlank
   private String kanaName;
   @Email(message = "メールアドレスの形式が不正です")
+  @NotBlank
   private String email;
   @NotBlank
   private String area;

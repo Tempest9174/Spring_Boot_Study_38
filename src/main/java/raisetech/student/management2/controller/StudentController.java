@@ -47,7 +47,7 @@ public class StudentController {
 
     // model.addAttribute("studentList",);//コースリストを取得
 
-    return service.searchStudentList();
+  return service.searchStudentList();
 
     //変数でなくStudent studentなのか？
     //表示
@@ -84,7 +84,7 @@ public class StudentController {
 //  }
 //難しい箇所👆登録処理が実装＞＞不要
 
-  //上のメソッド何してるか？
+
 
   /**
    * 受講生詳細の登録を行う
@@ -95,13 +95,13 @@ public class StudentController {
 //studentDetailの名前にバリデーションチェックを追加
 
     @PostMapping("/registerStudent")
-  public ResponseEntity<StudentDetail> registerStudent( @RequestBody @Valid  StudentDetail studentDetail) {
+    public ResponseEntity<StudentDetail> registerStudent( @RequestBody @Valid  StudentDetail studentDetail) {
 
 
 
     StudentDetail responseStudentDetail = service.registerStudent(studentDetail);
     return ResponseEntity.ok(responseStudentDetail) ;
-  }
+     }
   //生徒一覧に一件をformから追加する
   //ここに何か処理入る。
   //下のDetailもおかし？

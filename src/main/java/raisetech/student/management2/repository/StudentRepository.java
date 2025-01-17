@@ -23,8 +23,6 @@ public interface StudentRepository {
    * 受講生の全件検索
    * @return 受講生一覧(全件)
    */
-  // @Select("SELECT * FROM students")
-  //@Select("SELECT * FROM students where isDeleted = false")
   List<Student> search();
 
   /**
@@ -32,7 +30,6 @@ public interface StudentRepository {
    * @param  id 受講生ID
    * @return 受講生一覧()
    */
-  //@Select("SELECT * FROM students where id = #{id}")
   Student searchStudent(String id);
 
 
@@ -41,7 +38,6 @@ public interface StudentRepository {
    *
    * @return 受講生コースの一覧（全件）
    */
-  //@Select("SELECT * FROM students_courses")
   List<StudentsCourse> searchStudentCourseList();
 
   /**
@@ -50,7 +46,6 @@ public interface StudentRepository {
    * @param studentId 受講生ID
    * @return 受講生IDに紐づく受講生コース情報
    */
-  //@Select("SELECT * FROM students_courses where student_id = #{studentId}")
   List<StudentsCourse> searchStudentCourse(String studentId);
 
   //@Select("SELECT * FROM students_courses where student_id = #{studentId}")
@@ -64,8 +59,6 @@ public interface StudentRepository {
    */
 
   //新規受講生を追加するSQLを発行
-  //@Insert("INSERT INTO students(name, kana_name, nickname, email, area, age, sex, remark, isDeleted) values( #{name},  #{kanaName}, #{nickName},#{email}, #{area}, #{age}, #{sex}, #{remark}, false)")
-  //@Options(useGeneratedKeys = true, keyProperty = "id")
   void registerStudent(Student student);
 
   /**
@@ -74,9 +67,6 @@ public interface StudentRepository {
    * @param studentsCourse 受講生コース情報
    */
 
-  //@Insert("INSERT INTO students_courses(student_id, course_name, course_start_at, course_end_at)"
-  //+ "values(#{studentId}, #{courseName}, #{courseStartAt}, #{courseEndAt})")
-  //@Options(useGeneratedKeys = true, keyProperty = "id")
   void registerStudentCourse(StudentsCourse studentsCourse);
 
 
@@ -87,8 +77,6 @@ public interface StudentRepository {
    */
 
   //更新SQLを発行
-  //@Update("UPDATE students SET name = #{name}, kana_name = #{kanaName}, nickname = #{nickName}, email = #{email}, area = #{area}, age = #{age}, sex = #{sex}, remark = #{remark}, isDeleted = #{isDeleted} WHERE id = #{id}")
-  //@Optionsいらない
   void updateStudent(Student student);
 
 
@@ -99,6 +87,5 @@ public interface StudentRepository {
       * @param studentCourse 受講生コース情報
    */
 
-  //@Update("UPDATE students_courses set course_name = #{courseName} where id = #{id}")
   void updateStudentCourse(StudentsCourse studentCourse);
 }

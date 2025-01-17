@@ -14,7 +14,6 @@ import raisetech.student.management2.data.Student;
 @NoArgsConstructor
 @AllArgsConstructor
 
-
 public class StudentDetail
 {
     @Valid

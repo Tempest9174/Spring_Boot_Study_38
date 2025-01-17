@@ -100,7 +100,7 @@ public class StudentService {
    * @param studentsCourse 受講生コース情報
    * @param student 受講生
    */
-  private static void initStudentCourse(StudentsCourse studentsCourse, Student student) {
+  private void initStudentCourse(StudentsCourse studentsCourse, Student student) {
     studentsCourse.setStudentId(student.getId());
     Date now = Date.valueOf(now());
 
@@ -123,6 +123,7 @@ public class StudentService {
     //駄目な実装
     studentDetail.getStudentsCourseList()
         .forEach(studentCourse -> repository.updateStudentCourse(studentCourse));
+
 
     }
   }
