@@ -1,13 +1,12 @@
 package raisetech.student.management2.data;
 
 import java.sql.Date;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 @Getter
 @Setter
-public class StudentsCourses {
+public class StudentsCourse {
 
 
 
