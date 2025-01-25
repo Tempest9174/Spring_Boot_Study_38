@@ -5,16 +5,21 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Size;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 import raisetech.student.management2.data.StudentsCourse;
 import raisetech.student.management2.domain.StudentDetail;
+import raisetech.student.management2.exception.InvalidStudentIdException;
 import raisetech.student.management2.service.StudentService;
 
 /**
@@ -42,12 +47,13 @@ public class StudentController {
    * @return 受講生一覧（全件）
    */
   @GetMapping("/studentList")
-  public List<StudentDetail>  getStudentList() {
+  public List<StudentDetail>  getStudentList()  {
     //StudentDetailにまとめるのが依然と異なる。
-
+    //throw new InvalidStudentIdException();
     // model.addAttribute("studentList",);//コースリストを取得
+    //throw new InvalidStudentIdException("現在このAPIは利用できません");
 
-  return service.searchStudentList();
+    return service.searchStudentList();
 
     //変数でなくStudent studentなのか？
     //表示
@@ -95,11 +101,16 @@ public class StudentController {
 //studentDetailの名前にバリデーションチェックを追加
 
     @PostMapping("/registerStudent")
-    public ResponseEntity<StudentDetail> registerStudent( @RequestBody @Valid  StudentDetail studentDetail) {
+    public ResponseEntity<StudentDetail> registerStudent( @RequestBody @Valid  StudentDetail studentDetail, BindingResult result) {
+
+      if (result.hasErrors()) {
+        //エラーをオリジナル例外としてスロー
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "受講生情報が不正です");
 
 
 
-    StudentDetail responseStudentDetail = service.registerStudent(studentDetail);
+      }
+        StudentDetail responseStudentDetail = service.registerStudent(studentDetail);
     return ResponseEntity.ok(responseStudentDetail) ;
      }
   //生徒一覧に一件をformから追加する
@@ -120,7 +131,7 @@ public class StudentController {
   public ResponseEntity<String> updateStudent(@RequestBody @Valid StudentDetail studentDetail) {
 
     service.updateStudent(studentDetail);
-    System.out.println(studentDetail.getStudent().getName() + "さんの受講生受講生情報が新たに登録されました。");
+    System.out.println(studentDetail.getStudent().getName() + "さんの受講生受講生情報が新たに更新されました。");
     return ResponseEntity.ok("更新処理が成功しました");
   }
 
@@ -131,4 +142,10 @@ public class StudentController {
     //引数消した
   }
   //対応するサービス層がないため有無を言わさず全件検索
+
+
+  //@ExceptionHandler(InvalidStudentIdException.class)
+  //public ResponseEntity<String> handleException(InvalidStudentIdException e) {
+  //  return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+  //}
 }
