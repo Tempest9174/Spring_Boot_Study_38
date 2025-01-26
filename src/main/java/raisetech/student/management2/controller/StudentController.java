@@ -19,7 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import raisetech.student.management2.data.StudentsCourse;
 import raisetech.student.management2.domain.StudentDetail;
-import raisetech.student.management2.exception.InvalidStudentIdException;
+import raisetech.student.management2.exception.InvalidStudentDetailException;
+//import raisetech.student.management2.exception.InvalidStudentIdException;
 import raisetech.student.management2.service.StudentService;
 
 /**
@@ -100,22 +101,29 @@ public class StudentController {
 
 //studentDetailの名前にバリデーションチェックを追加
 
-    @PostMapping("/registerStudent")
-    public ResponseEntity<StudentDetail> registerStudent( @RequestBody @Valid  StudentDetail studentDetail, BindingResult result) {
-
-      if (result.hasErrors()) {
-        //エラーをオリジナル例外としてスロー
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "受講生情報が不正です");
-
-
-
-      }
-        StudentDetail responseStudentDetail = service.registerStudent(studentDetail);
-    return ResponseEntity.ok(responseStudentDetail) ;
-     }
+ // @PostMapping("/registerStudent")
+ // public ResponseEntity<StudentDetail> registerStudent(@RequestBody @Valid StudentDetail studentDetail, BindingResult result) {
+ //   if (result.hasErrors()) {
+ //     // エラーメッセージを収集してスロー
+ //     String errorMessages = result.getFieldErrors().stream()
+ //         .map(err -> err.getField() + ": " + err.getDefaultMessage())
+ //         .reduce((m1, m2) -> m1 + ", " + m2)
+ //         .orElse("受講生情報が不正です");
+ //     throw new InvalidStudentDetailException(errorMessages);
+ //   }
+ //   StudentDetail responseStudentDetail = service.registerStudent(studentDetail);
+ //   return ResponseEntity.ok(responseStudentDetail);
+  //}  ～1/25
   //生徒一覧に一件をformから追加する
   //ここに何か処理入る。
   //下のDetailもおかし？
+
+  @PostMapping("/registerStudent")
+  public ResponseEntity<StudentDetail> registerStudent(@RequestBody @Valid StudentDetail studentDetail) {
+    StudentDetail responseStudentDetail = service.registerStudent(studentDetail);
+    return ResponseEntity.ok(responseStudentDetail);
+  }
+
 
 
   //下、レッスン33
