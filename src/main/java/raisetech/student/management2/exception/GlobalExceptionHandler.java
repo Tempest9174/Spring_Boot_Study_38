@@ -1,7 +1,5 @@
 package raisetech.student.management2.exception;
 
-
-
 import jakarta.validation.ConstraintViolationException;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +19,7 @@ public class GlobalExceptionHandler {
 
   /**
    * リクエストボディのバリデーションエラーを処理する
+   *
    * @param ex
    * @return HTTPステータスコード と、改行で区切られたバリデーションエラーメッセージ
    */
@@ -41,14 +40,16 @@ public class GlobalExceptionHandler {
 
   /**
    * パラメータの入力エラーを処理します。
+   *
    * @param ex
    * @return HTTPステータスコード と、改行で区切られたバリデーションエラーメッセージ
    */
   @ExceptionHandler(ConstraintViolationException.class)
-  public ResponseEntity<String> handleConstraintViolationException(ConstraintViolationException ex) {
+  public ResponseEntity<String> handleConstraintViolationException(
+      ConstraintViolationException ex) {
     // エラーメッセージを整形
     StringBuilder errorMessages = new StringBuilder("Bad Request:\n");
-    String message = "Validation failed:入力エラーです。 " +"\n" + ex.getMessage();
+    String message = "Validation failed:入力エラーです。 " + "\n" + ex.getMessage();
     // コンソールにエラーメッセージを出力
     System.err.println("パラメータの入力エラー:\n" + errorMessages);
     return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
@@ -57,31 +58,26 @@ public class GlobalExceptionHandler {
 
   /**
    * 予期しないエラーを処理します。(例：受講生検索で何も入力がない場合)
+   *
    * @param ex
    * @return HTTPステータスコード と、改行で区切られたバリデーションエラーメッセージ
    */
   @ExceptionHandler(Exception.class)
   public ResponseEntity<String> handleGenericException(Exception ex) {
-    return new ResponseEntity<>("An unexpected error occurred:予期しないエラー。 " +"\n" + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    return new ResponseEntity<>(
+        "An unexpected error occurred:予期しないエラー。 " + "\n" + ex.getMessage(),
+        HttpStatus.INTERNAL_SERVER_ERROR);
   }
-
 
 
   //registerstudentのbodyの登録時のエラー
   @ExceptionHandler(ResponseStatusException.class)
   public ResponseEntity<String> handleResponseStatusException(ResponseStatusException ex) {
+
     //POSTMANにエラー文、正しい入力をお願いしますを表示する
+
     Map<String, Object> response = new HashMap<>();
     response.put("message", ex.getReason());
     return new ResponseEntity<>(response.toString(), ex.getStatusCode());
-  }
-  @ExceptionHandler(StudentNotFoundException.class)
-  public ResponseEntity<Map<String, Object>> handleStudentNotFoundException(StudentNotFoundException ex) {
-    Map<String, Object> errorResponse = new HashMap<>();
-    errorResponse.put("status", HttpStatus.NOT_FOUND.value());
-    errorResponse.put("error", "Not Found");
-    errorResponse.put("message", ex.getMessage());
-
-    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
   }
 }
