@@ -5,16 +5,23 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Size;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 import raisetech.student.management2.data.StudentsCourse;
 import raisetech.student.management2.domain.StudentDetail;
+import raisetech.student.management2.exception.InvalidStudentDetailException;
+//import raisetech.student.management2.exception.InvalidStudentIdException;
+import raisetech.student.management2.exception.MissingParameterException;
 import raisetech.student.management2.service.StudentService;
 
 /**
@@ -42,12 +49,13 @@ public class StudentController {
    * @return 受講生一覧（全件）
    */
   @GetMapping("/studentList")
-  public List<StudentDetail>  getStudentList() {
+  public List<StudentDetail>  getStudentList()  {
     //StudentDetailにまとめるのが依然と異なる。
-
+    //throw new InvalidStudentIdException();
     // model.addAttribute("studentList",);//コースリストを取得
+    //throw new InvalidStudentIdException("現在このAPIは利用できません");
 
-  return service.searchStudentList();
+    return service.searchStudentList();
 
     //変数でなくStudent studentなのか？
     //表示
@@ -56,16 +64,19 @@ public class StudentController {
 
   /**
    * 受講生詳細検索を行う
-   * IDに紐づくに似の受講生の情報を取得する
+   * IDに紐づく受講生の情報を取得する
    * @param id 受講生ID
    * @return 受講生詳細
    */
   @GetMapping("/student/{id}")
-  public StudentDetail getStudent(@PathVariable @Size(min=1, max=2, message="入力して！！！") String id) {
-
-    //studentDetail.setStudentsCourses(Arrays.asList(new StudentsCourse()));
+  public StudentDetail getStudent(@PathVariable(required = false) String id) {
+    if (id == null || id.isEmpty() || id.length() < 1 || id.length() > 2) {
+      System.out.println("受講生IDが入力されていません。");
+      throw new MissingParameterException("受講生IDは1～2文字で入力してください。");
+    }
     return service.searchStudent(id);
   }
+
 //難しい箇所👆AIツールの使い方
 
 
@@ -94,17 +105,29 @@ public class StudentController {
 
 //studentDetailの名前にバリデーションチェックを追加
 
-    @PostMapping("/registerStudent")
-    public ResponseEntity<StudentDetail> registerStudent( @RequestBody @Valid  StudentDetail studentDetail) {
-
-
-
-    StudentDetail responseStudentDetail = service.registerStudent(studentDetail);
-    return ResponseEntity.ok(responseStudentDetail) ;
-     }
+ // @PostMapping("/registerStudent")
+ // public ResponseEntity<StudentDetail> registerStudent(@RequestBody @Valid StudentDetail studentDetail, BindingResult result) {
+ //   if (result.hasErrors()) {
+ //     // エラーメッセージを収集してスロー
+ //     String errorMessages = result.getFieldErrors().stream()
+ //         .map(err -> err.getField() + ": " + err.getDefaultMessage())
+ //         .reduce((m1, m2) -> m1 + ", " + m2)
+ //         .orElse("受講生情報が不正です");
+ //     throw new InvalidStudentDetailException(errorMessages);
+ //   }
+ //   StudentDetail responseStudentDetail = service.registerStudent(studentDetail);
+ //   return ResponseEntity.ok(responseStudentDetail);
+  //}  ～1/25
   //生徒一覧に一件をformから追加する
   //ここに何か処理入る。
   //下のDetailもおかし？
+
+  @PostMapping("/registerStudent")
+  public ResponseEntity<StudentDetail> registerStudent(@RequestBody @Valid StudentDetail studentDetail) {
+    StudentDetail responseStudentDetail = service.registerStudent(studentDetail);
+    return ResponseEntity.ok(responseStudentDetail);
+  }
+
 
 
   //下、レッスン33
@@ -120,7 +143,7 @@ public class StudentController {
   public ResponseEntity<String> updateStudent(@RequestBody @Valid StudentDetail studentDetail) {
 
     service.updateStudent(studentDetail);
-    System.out.println(studentDetail.getStudent().getName() + "さんの受講生受講生情報が新たに登録されました。");
+    System.out.println(studentDetail.getStudent().getName() + "さんの受講生受講生情報が新たに更新されました。");
     return ResponseEntity.ok("更新処理が成功しました");
   }
 
@@ -131,4 +154,10 @@ public class StudentController {
     //引数消した
   }
   //対応するサービス層がないため有無を言わさず全件検索
+
+
+  //@ExceptionHandler(InvalidStudentIdException.class)
+  //public ResponseEntity<String> handleException(InvalidStudentIdException e) {
+  //  return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+  //}
 }
