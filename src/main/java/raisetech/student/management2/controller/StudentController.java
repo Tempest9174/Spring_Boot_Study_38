@@ -21,6 +21,7 @@ import raisetech.student.management2.data.StudentsCourse;
 import raisetech.student.management2.domain.StudentDetail;
 import raisetech.student.management2.exception.InvalidStudentDetailException;
 //import raisetech.student.management2.exception.InvalidStudentIdException;
+import raisetech.student.management2.exception.MissingParameterException;
 import raisetech.student.management2.service.StudentService;
 
 /**
@@ -63,16 +64,19 @@ public class StudentController {
 
   /**
    * 受講生詳細検索を行う
-   * IDに紐づくに似の受講生の情報を取得する
+   * IDに紐づく受講生の情報を取得する
    * @param id 受講生ID
    * @return 受講生詳細
    */
   @GetMapping("/student/{id}")
-  public StudentDetail getStudent(@PathVariable @Size(min=1, max=2, message="入力して！！！") String id) {
-
-    //studentDetail.setStudentsCourses(Arrays.asList(new StudentsCourse()));
+  public StudentDetail getStudent(@PathVariable(required = false) String id) {
+    if (id == null || id.isEmpty() || id.length() < 1 || id.length() > 2) {
+      System.out.println("受講生IDが入力されていません。");
+      throw new MissingParameterException("受講生IDは1～2文字で入力してください。");
+    }
     return service.searchStudent(id);
   }
+
 //難しい箇所👆AIツールの使い方
 
 
