@@ -22,6 +22,7 @@ import raisetech.student.management2.domain.StudentDetail;
 import raisetech.student.management2.exception.InvalidStudentDetailException;
 //import raisetech.student.management2.exception.InvalidStudentIdException;
 import raisetech.student.management2.exception.MissingParameterException;
+import raisetech.student.management2.exception.StudentNotFoundException;
 import raisetech.student.management2.service.StudentService;
 
 /**
@@ -70,9 +71,9 @@ public class StudentController {
    */
   @GetMapping("/student/{id}")
   public StudentDetail getStudent(@PathVariable(required = false) String id) {
-    if (id == null || id.isEmpty() || id.length() < 1 || id.length() > 2) {
+    if (id == null || id.trim().isEmpty() || !id.matches("\\d{1,2}")) {
       System.out.println("受講生IDが入力されていません。");
-      throw new MissingParameterException("受講生IDは1～2文字で入力してください。");
+      throw new StudentNotFoundException("受講生IDが存在しなません");
     }
     return service.searchStudent(id);
   }

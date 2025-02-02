@@ -42,26 +42,16 @@ public class StudentExceptionHandler {
    * @param ex
    * @return HTTPステータスコード と、改行で区切られたバリデーションエラーメッセージ
    */
-  //@ExceptionHandler(ConstraintViolationException.class)
-  //public ResponseEntity<String> handleConstraintViolationException(
-  //    ConstraintViolationException ex) {
-  //  // エラーメッセージを整形
 
-  //  StringBuilder errorMessages = new StringBuilder("Bad Request:\n");
-  //  String message = "Validation failed:入力エラーです。 " + "\n" + ex.getMessage();
-  // コンソールにエラーメッセージを出力
-  //  System.err.println("パラメータの入力エラー:\n" + errorMessages);
-  //  return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-  //}
   @ExceptionHandler(MissingParameterException.class)
   public ResponseEntity<String> handleMissingParameterException(MissingParameterException ex) {
     // エラーメッセージを構築
-    String message = "Bad Request:\n" +
+    String message = "Bad Request\n" +
         "Validation failed: 正しい番号を入れてください。\n" +
         ex.getMessage();
 
     // コンソールにエラーメッセージを出力
-    System.err.println("パラメータの入力エラー:\n" + message);
+    System.err.println("パラメータの入力エラー:" + message);
 
     // HTTPレスポンスとして返す
     return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
@@ -73,19 +63,15 @@ public class StudentExceptionHandler {
    * @param ex
    * @return HTTPステータスコード と、改行で区切られたバリデーションエラーメッセージ
    */
-  //@ExceptionHandler(Exception.class)
-  //public ResponseEntity<String> handleGenericException(Exception ex) {
-  //  return new ResponseEntity<>(
-  //      "An unexpected error occurred:予期しないエラー。 " + "\n" + ex.getMessage(),
-  //      HttpStatus.INTERNAL_SERVER_ERROR);
+
 
 // StudentNotFoundException をキャッチしてカスタムレスポンスを返す
   @ExceptionHandler(StudentNotFoundException.class)
   public ResponseEntity<String> handleStudentNotFoundException(StudentNotFoundException ex) {
     // エラーメッセージを構築
     System.out.println("エラーメッセージを構築");
-    String message = "Not Found:\n" +
-        "Validation failed: 番号を入れてください。\n" +
+    String message = "Not Found\n" +
+        "Validation failed: 指定されたIDに該当する受講生が見つかりません。\n" +
         ex.getMessage();
 
     // ログ出力
@@ -94,18 +80,5 @@ public class StudentExceptionHandler {
     return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
   }
 }
-
-
-
-
-//registerstudentのbodyの登録時のエラー
-//@ExceptionHandler(ResponseStatusException.class)
-//public ResponseEntity<String> handleResponseStatusException(ResponseStatusException ex) {
-//
-//POSTMANにエラー文、正しい入力をお願いしますを表示する
-
-//  Map<String, Object> response = new HashMap<>();
-//  response.put("message", ex.getReason());
-//  return new ResponseEntity<>(response.toString(), ex.getStatusCode());
 
 
