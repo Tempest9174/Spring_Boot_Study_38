@@ -20,6 +20,13 @@ public class StudentExceptionHandler {
   private static final Logger logger = LoggerFactory.getLogger(StudentExceptionHandler.class);
 
 
+  /**
+   * リクエストボディのバリデーションエラーを処理する
+   *
+   * @param ex
+   * @return HTTPステータスコード と、改行で区切られたバリデーションエラーメッセージ
+   */
+
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<Map<String, Object>> handleValidationExceptions(
@@ -29,10 +36,8 @@ public class StudentExceptionHandler {
         .map(error -> Map.of("field", error.getField(), "message", error.getDefaultMessage()))
         .collect(Collectors.toList());
 
-    // ターミナル（開発者向けログ）
-//    LOGGER.severe("バリデーションエラー発生: " +
-//        errors.stream().map(e -> e.get("field") + " - " + e.get("message"))
-//            .collect(Collectors.joining(", ")));
+
+
     // ログ出力（SLF4J）
     logger.error("バリデーションエラー発生: {}",
         errors.stream().map(e -> e.get("field") + " - " + e.get("message")).collect(Collectors.joining(", ")));
@@ -46,26 +51,6 @@ public class StudentExceptionHandler {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
   }
 
-//  /**
-//   * リクエストボディのバリデーションエラーを処理する
-//   *
-//   * @param ex
-//   * @return HTTPステータスコード と、改行で区切られたバリデーションエラーメッセージ
-//   */
-//  @ExceptionHandler(MethodArgumentNotValidException.class)
-//  public ResponseEntity<String> handleValidationExceptions(MethodArgumentNotValidException ex) {
-//    // エラーメッセージ収集
-//    StringBuilder errorMessages = new StringBuilder("Validation failed:\n");
-//    for (FieldError error : ex.getBindingResult().getFieldErrors()) {
-//      errorMessages.append(String.format("%s: %s%n", error.getField(), error.getDefaultMessage()));
-//    }
-//
-//    // コンソールにエラーメッセージを出力
-//    System.err.println("リクエストボディのバリデーションエラー:\n" + errorMessages);
-//
-//    // エラーメッセージをPOSTMANに返す
-//    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessages.toString());
-//  }
 
   /**
    * パラメータの入力エラーを処理します。
@@ -85,19 +70,8 @@ public class StudentExceptionHandler {
 
     return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
   }
-//  @ExceptionHandler(MissingParameterException.class)
-//  public ResponseEntity<String> handleMissingParameterException(MissingParameterException ex) {
-//    // エラーメッセージを構築
-//    String message = "Bad Request\n" +
-//        "Validation failed: 正しい番号を入れてください。\n" +
-//        ex.getMessage();
-//
-//    // コンソールにエラーメッセージを出力
-//    logger.error("パラメータの入力エラー:{}", ex.getMessage());
-//
-//    // HTTPレスポンスとして返す
-//    return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-//  }
+
+
 
   /**
    * 予期しないエラーを処理します。(例：受講生検索で何も入力がない場合>>正確にはスペースが入力されている場合)
