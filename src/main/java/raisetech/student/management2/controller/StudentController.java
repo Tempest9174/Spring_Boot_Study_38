@@ -4,6 +4,7 @@ package raisetech.student.management2.controller;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Size;
 import java.util.List;
+import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,17 +52,10 @@ public class StudentController {
    */
   @GetMapping("/studentList")
   public List<StudentDetail>  getStudentList()  {
-    //StudentDetailにまとめるのが依然と異なる。
-    //throw new InvalidStudentIdException();
-    // model.addAttribute("studentList",);//コースリストを取得
-    //throw new InvalidStudentIdException("現在このAPIは利用できません");
 
     return service.searchStudentList();
 
-    //変数でなくStudent studentなのか？
-    //表示
-    //return student.getName() + " " + student.getAge() + "歳";
-  }
+   }
 
   /**
    * 受講生詳細検索を行う
@@ -71,9 +65,9 @@ public class StudentController {
    */
   @GetMapping("/student/{id}")
   public StudentDetail getStudent(@PathVariable(required = false) String id) {
-    if (id == null || id.trim().isEmpty() || !id.matches("\\d{1,2}")) {
-      System.out.println("受講生IDが入力されていません。");
-      throw new StudentNotFoundException("受講生IDが存在しなません");
+    if (Objects.isNull(id) || id.trim().isEmpty() || !id.matches("\\d{1,2}")) {
+
+      throw new StudentNotFoundException("IDに紐づく受講生が存在しません");
     }
     return service.searchStudent(id);
   }
@@ -87,41 +81,12 @@ public class StudentController {
 
   }
 
-//  @GetMapping("/newStudent")
-//  public String newStudent(Model model) {
-//    StudentDetail studentDetail = new StudentDetail();
-//    studentDetail.setStudentsCourses(Arrays.asList(new StudentsCourse()));
-//    model.addAttribute("studentDetail", studentDetail);
-//    return "registerStudent";
-//  }
-//難しい箇所👆登録処理が実装＞＞不要
-
-
-
   /**
    * 受講生詳細の登録を行う
    * @param studentDetail 受講生詳細
    * @return 実行結果
    */
 
-//studentDetailの名前にバリデーションチェックを追加
-
- // @PostMapping("/registerStudent")
- // public ResponseEntity<StudentDetail> registerStudent(@RequestBody @Valid StudentDetail studentDetail, BindingResult result) {
- //   if (result.hasErrors()) {
- //     // エラーメッセージを収集してスロー
- //     String errorMessages = result.getFieldErrors().stream()
- //         .map(err -> err.getField() + ": " + err.getDefaultMessage())
- //         .reduce((m1, m2) -> m1 + ", " + m2)
- //         .orElse("受講生情報が不正です");
- //     throw new InvalidStudentDetailException(errorMessages);
- //   }
- //   StudentDetail responseStudentDetail = service.registerStudent(studentDetail);
- //   return ResponseEntity.ok(responseStudentDetail);
-  //}  ～1/25
-  //生徒一覧に一件をformから追加する
-  //ここに何か処理入る。
-  //下のDetailもおかし？
 
   @PostMapping("/registerStudent")
   public ResponseEntity<StudentDetail> registerStudent(@RequestBody @Valid StudentDetail studentDetail) {
@@ -155,10 +120,4 @@ public class StudentController {
     //引数消した
   }
   //対応するサービス層がないため有無を言わさず全件検索
-
-
-  //@ExceptionHandler(InvalidStudentIdException.class)
-  //public ResponseEntity<String> handleException(InvalidStudentIdException e) {
-  //  return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-  //}
 }

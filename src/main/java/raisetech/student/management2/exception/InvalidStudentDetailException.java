@@ -8,9 +8,3 @@ public class InvalidStudentDetailException extends RuntimeException {
     super(message); // エラーメッセージを親クラスに渡す
   }
 }
-
-
-
-
-
-
