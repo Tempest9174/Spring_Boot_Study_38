@@ -4,17 +4,26 @@ package raisetech.student.management2.controller;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Size;
 import java.util.List;
+import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 import raisetech.student.management2.data.StudentsCourse;
 import raisetech.student.management2.domain.StudentDetail;
+import raisetech.student.management2.exception.InvalidStudentDetailException;
+//import raisetech.student.management2.exception.InvalidStudentIdException;
+import raisetech.student.management2.exception.MissingParameterException;
+import raisetech.student.management2.exception.StudentNotFoundException;
 import raisetech.student.management2.service.StudentService;
 
 /**
@@ -42,30 +51,27 @@ public class StudentController {
    * @return 受講生一覧（全件）
    */
   @GetMapping("/studentList")
-  public List<StudentDetail>  getStudentList() {
-    //StudentDetailにまとめるのが依然と異なる。
+  public List<StudentDetail>  getStudentList()  {
 
-    // model.addAttribute("studentList",);//コースリストを取得
+    return service.searchStudentList();
 
-  return service.searchStudentList();
-
-    //変数でなくStudent studentなのか？
-    //表示
-    //return student.getName() + " " + student.getAge() + "歳";
-  }
+   }
 
   /**
    * 受講生詳細検索を行う
-   * IDに紐づくに似の受講生の情報を取得する
+   * IDに紐づく受講生の情報を取得する
    * @param id 受講生ID
    * @return 受講生詳細
    */
   @GetMapping("/student/{id}")
-  public StudentDetail getStudent(@PathVariable @Size(min=1, max=2, message="入力して！！！") String id) {
+  public StudentDetail getStudent(@PathVariable(required = false) String id) {
+    if (Objects.isNull(id) || id.trim().isEmpty() || !id.matches("\\d{1,2}")) {
 
-    //studentDetail.setStudentsCourses(Arrays.asList(new StudentsCourse()));
+      throw new StudentNotFoundException("IDに紐づく受講生が存在しません");
+    }
     return service.searchStudent(id);
   }
+
 //難しい箇所👆AIツールの使い方
 
 
@@ -75,36 +81,19 @@ public class StudentController {
 
   }
 
-//  @GetMapping("/newStudent")
-//  public String newStudent(Model model) {
-//    StudentDetail studentDetail = new StudentDetail();
-//    studentDetail.setStudentsCourses(Arrays.asList(new StudentsCourse()));
-//    model.addAttribute("studentDetail", studentDetail);
-//    return "registerStudent";
-//  }
-//難しい箇所👆登録処理が実装＞＞不要
-
-
-
   /**
    * 受講生詳細の登録を行う
    * @param studentDetail 受講生詳細
    * @return 実行結果
    */
 
-//studentDetailの名前にバリデーションチェックを追加
 
-    @PostMapping("/registerStudent")
-    public ResponseEntity<StudentDetail> registerStudent( @RequestBody @Valid  StudentDetail studentDetail) {
-
-
-
+  @PostMapping("/registerStudent")
+  public ResponseEntity<StudentDetail> registerStudent(@RequestBody @Valid StudentDetail studentDetail) {
     StudentDetail responseStudentDetail = service.registerStudent(studentDetail);
-    return ResponseEntity.ok(responseStudentDetail) ;
-     }
-  //生徒一覧に一件をformから追加する
-  //ここに何か処理入る。
-  //下のDetailもおかし？
+    return ResponseEntity.ok(responseStudentDetail);
+  }
+
 
 
   //下、レッスン33
@@ -120,7 +109,7 @@ public class StudentController {
   public ResponseEntity<String> updateStudent(@RequestBody @Valid StudentDetail studentDetail) {
 
     service.updateStudent(studentDetail);
-    System.out.println(studentDetail.getStudent().getName() + "さんの受講生受講生情報が新たに登録されました。");
+    System.out.println(studentDetail.getStudent().getName() + "さんの受講生受講生情報が新たに更新されました。");
     return ResponseEntity.ok("更新処理が成功しました");
   }
 
