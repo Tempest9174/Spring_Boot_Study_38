@@ -11,12 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 public class Application {
 
-//	@Autowired
-//	private StudentRepository repository;
-	//private CourseRepository courseRepository;
 
 	public static void main(String[] args) {
-//変更
+//変更し各層へ移動
 		SpringApplication.run(Application.class, args);
 	}
 }
