@@ -20,6 +20,7 @@ public class StudentExceptionHandler {
   private static final Logger logger = LoggerFactory.getLogger(StudentExceptionHandler.class);
 
 
+
   /**
    * リクエストボディのバリデーションエラーを処理する
    *
