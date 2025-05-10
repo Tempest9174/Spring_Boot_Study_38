@@ -87,7 +87,7 @@ public class StudentExceptionHandler {
     // エラーメッセージを構築
     System.out.println("エラーメッセージを構築");
     String message = "Not Found\n" +
-        "Validation failed: 指定されたIDに該当する受講生が見つかりません。\n" +
+        "Validation failed: " +
         ex.getMessage();
 
     // loggerでコンソールに表示

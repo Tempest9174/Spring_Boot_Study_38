@@ -11,9 +11,9 @@ import lombok.Setter;
 public class StudentNotFoundException extends RuntimeException {
 
   // デフォルトコンストラクタ
-  public StudentNotFoundException() {
-    super("学生情報が見つかりません");
-  }
+ // public StudentNotFoundException() {
+//    super("学生情報が見つかりません");
+//  }
 
   // カスタムメッセージを設定できるコンストラクタ
   public StudentNotFoundException(String message) {

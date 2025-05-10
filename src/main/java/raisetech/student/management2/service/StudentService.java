@@ -8,6 +8,7 @@ import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.messageresolver.IMessageResolver;
 import raisetech.student.management2.controller.converter.StudentConverter;
 import raisetech.student.management2.data.StudentsCourse;
 import raisetech.student.management2.data.Student;
@@ -57,7 +58,7 @@ public class StudentService {
     Student student = repository.searchStudent(id);
     if (Objects.isNull(student)) {
 
-        throw new StudentNotFoundException("指定されたIDの学生が見つかりません: ");
+        throw new StudentNotFoundException("指定されたIDの学生が見つかりません: " + id);
       }
       List<StudentsCourse> studentCourse = repository.searchStudentCourse(student.getId());
       return new StudentDetail(student, studentCourse);
