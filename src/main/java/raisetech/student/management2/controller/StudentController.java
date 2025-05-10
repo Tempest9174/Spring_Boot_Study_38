@@ -30,7 +30,6 @@ import raisetech.student.management2.service.StudentService;
  * 受講生の検索や登録、更新等を行うREST APIとして実行するコントローラ
  */
 
-
 @Validated
 @RestController
 public class StudentController {
