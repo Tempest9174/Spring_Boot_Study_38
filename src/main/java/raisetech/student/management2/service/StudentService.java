@@ -111,8 +111,30 @@ public class StudentService {
       studentsCourse.setCourseEndAt(Date.valueOf(now().plusYears(1)));
     }
 //TODO: コース情報の登録も行う
+  /**
+   * 受講生コース情報の登録を行う
+   * @param studentsCourse 受講生コース情報
+   */
 
-    /**
+  @Transactional
+  public void registerStudentCourse (StudentsCourse studentsCourse){
+    Date now = Date.valueOf(now());
+    //ダミー出力
+    System.out.println("受講生コース情報の登録を行います");
+    studentsCourse.setCourseStartAt(now);
+    studentsCourse.setCourseEndAt(Date.valueOf(now().plusYears(1)));
+    //コース名が重複していた場合エラー表示で中止
+    if (repository.searchStudentCourse(studentsCourse.getStudentId())
+        .stream()
+        .anyMatch(course -> course.getCourseName().equals(studentsCourse.getCourseName()))) {
+      throw new IllegalArgumentException("コース名が重複しています");
+    }
+    //コース名が重複していない場合は登録
+
+    repository.registerStudentCourse(studentsCourse);
+  }
+
+  /**
      * 受講生詳細の更新を行う
      * 受講生情報と受講生コース情報を個別に更新する
      * @param studentDetail 受講生詳細
