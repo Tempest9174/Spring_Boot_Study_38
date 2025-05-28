@@ -40,12 +40,12 @@ public class StudentService {
    * @return 受講生詳細一覧(全件)
    */
   public List<StudentDetail> searchStudentList() {
- //   レッスン24：return repository.search().stream()
-    List<Student> studentList = repository.search();
-    //.filter(student -> student.getAge() > 30).collect(Collectors.toList());
-    List<StudentsCourse> studentCourseList = repository.searchStudentCourseList();
+      List<Student> studentList = repository.search();
+      List<StudentsCourse> studentCourseList = repository.searchStudentCourseList();
     return converter.convertStudentDetails(studentList, studentCourseList);
   }
+  //   レッスン24：return repository.search().stream()
+  //.filter(student -> student.getAge() > 30).collect(Collectors.toList());
 
   /**
    * 受講生詳細検索

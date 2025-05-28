@@ -2,6 +2,7 @@ package raisetech.student.management2.data;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -38,7 +39,8 @@ public class Student {
   private String area;
 
   @Schema(description = "年齢", example = "25")
-  @NotNull
+  @NotNull(message = "年齢を数値で入力してください")
+  @Min(value = 1, message = "年齢は1以上を入力してください")
   private int age;
 
   @Schema(description = "性別", example = "男性")

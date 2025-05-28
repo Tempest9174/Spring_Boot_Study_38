@@ -36,8 +36,8 @@ dependencies {
 	//バージョン3.3.3いらないかも
 
 	//Lombpk
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
+		compileOnly 'org.projectlombok:lombok'
+		annotationProcessor 'org.projectlombok:lombok'
 
 	//便利機能
 	implementation 'org.apache.commons:commons-lang3:3.14.0'
@@ -51,6 +51,9 @@ dependencies {
 
 	//OpenAPI
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
+
+	implementation 'org.slf4j:slf4j-api:2.0.9'
+	implementation 'ch.qos.logback:logback-classic:1.4.11'
 
 }
 

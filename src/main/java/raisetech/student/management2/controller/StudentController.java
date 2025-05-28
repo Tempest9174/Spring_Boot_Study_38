@@ -89,7 +89,7 @@ public class StudentController {
 //      throw new StudentNotFoundException("指定されたIDの受講生は存在しません");
 //    }
 
-    
+
     return student;
   }
 //難しい箇所:AIツールの使い方
