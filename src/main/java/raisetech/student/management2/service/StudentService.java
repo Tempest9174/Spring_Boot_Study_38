@@ -119,10 +119,12 @@ public class StudentService {
   @Transactional
   public void registerStudentCourse (StudentsCourse studentsCourse){
     Date now = Date.valueOf(now());
+
     //ダミー出力
     System.out.println("受講生コース情報の登録を行います");
     studentsCourse.setCourseStartAt(now);
     studentsCourse.setCourseEndAt(Date.valueOf(now().plusYears(1)));
+
     //コース名が重複していた場合エラー表示で中止
     if (repository.searchStudentCourse(studentsCourse.getStudentId())
         .stream()
