@@ -6,11 +6,13 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
 @Schema(description = "受講生の基本情報")
 public class Student {
 
@@ -52,4 +54,10 @@ public class Student {
 
   @Schema(description = "削除フラグ（true = 論理削除）", example = "false")
   private boolean isDeleted;
+
+  //public Student(String number, String 佐藤太郎, String さとうたろう, String タロ, String mail,
+  //    String 東京, int i, String 男性, String s,
+  //    boolean b) {
+
+  //}
 }

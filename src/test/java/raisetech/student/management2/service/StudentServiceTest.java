@@ -60,7 +60,7 @@ class StudentServiceTest {
   void 受講生詳細検索_リポジトリの処理が適切に呼び出せていること() {
     // 事前準備
     String studentId = "12345";
-    Student student = new Student();
+    Student student = new Student(studentId,"山田愛子", "やまだあいこ", "アイコ", "aiko@gmail.com","大阪",22,"女性","",false);
     student.setId(studentId);
     when(repository.searchStudent(studentId)).thenReturn(student);
 
@@ -111,7 +111,7 @@ class StudentServiceTest {
   void 受講生詳細の登録_リポジトリの処理が適切に呼び出せていること() {
     // 事前準備
     StudentDetail studentDetail = new StudentDetail();
-    Student student = new Student();
+    Student student = new Student("1","山田愛子", "やまだあいこ", "アイコ", "aiko@gmail.com","大阪",22,"女性","",false);
     student.setId("1");
     studentDetail.setStudent(student);
 
@@ -169,7 +169,7 @@ class StudentServiceTest {
   @Test
   void 受講生の更新_リポジトリの処理が適切に呼び出せていること() {
     // 事前準備
-    Student student = new Student();
+    Student student = new Student("2", "佐藤太郎", "さとうたろう", "タロ", "taro@gmail.com", "東京", 25, "男性", "", false);
     StudentsCourse studentsCourse = new StudentsCourse();
     List<StudentsCourse> studentsCourses = List.of(studentsCourse);
     StudentDetail studentDetail = new StudentDetail(student, studentsCourses);
