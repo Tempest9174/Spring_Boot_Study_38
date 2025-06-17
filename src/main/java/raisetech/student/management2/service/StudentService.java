@@ -92,6 +92,7 @@ public class StudentService {
       repository.registerStudent(student);
       studentDetail.getStudentsCourseList().forEach(studentsCourse -> {
         initStudentCourse(studentsCourse, student);
+        //TODO：講師はstudent.getId()にしている。付けるとエラー
         repository.registerStudentCourse(studentsCourse);
       });
 
@@ -104,9 +105,9 @@ public class StudentService {
      * @param student 受講生
      */
     private void initStudentCourse (StudentsCourse studentsCourse, Student student){
-      studentsCourse.setStudentId(student.getId());
       Date now = Date.valueOf(now());
-
+      studentsCourse.setStudentId(student.getId());
+      //TODO: Dateの設定が相違
       studentsCourse.setCourseStartAt(now);
       studentsCourse.setCourseEndAt(Date.valueOf(now().plusYears(1)));
     }

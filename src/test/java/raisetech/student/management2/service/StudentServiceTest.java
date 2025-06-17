@@ -59,7 +59,7 @@ class StudentServiceTest {
   @Test
   void 受講生詳細検索_リポジトリの処理が適切に呼び出せていること() {
     // 事前準備
-    String studentId = "12345";
+    String studentId = "123";
     Student student = new Student(studentId,"山田愛子", "やまだあいこ", "アイコ", "aiko@gmail.com","大阪",22,"女性","",false);
     student.setId(studentId);
     when(repository.searchStudent(studentId)).thenReturn(student);
@@ -68,15 +68,17 @@ class StudentServiceTest {
     when(repository.searchStudentCourse(studentId)).thenReturn(studentsCourses);
 
     // 実行
+    StudentDetail expected = new StudentDetail(student, studentsCourses);
     StudentDetail actual = sut.searchStudent(studentId);
 
-    // 検証
-    assertNotNull(actual);
-    assertEquals(student, actual.getStudent());
-    assertEquals(studentsCourses, actual.getStudentsCourseList());
-
+//    // 検証
+//    assertNotNull(actual);
+//    assertEquals(student, actual.getStudent());
+//    assertEquals(studentsCourses, actual.getStudentsCourseList());
+//
     verify(repository, times(1)).searchStudent(studentId);
     verify(repository, times(1)).searchStudentCourse(studentId);
+    Assertions.assertEquals(expected, actual);
   }
 
   @Test
@@ -181,5 +183,6 @@ class StudentServiceTest {
   }
 
 //改善
+  //TODO 例外のテスト要らないか？受講生詳細の登録テストが検証
 
 }
