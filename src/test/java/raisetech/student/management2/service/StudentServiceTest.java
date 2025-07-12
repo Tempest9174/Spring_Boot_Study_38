@@ -3,6 +3,7 @@ package raisetech.student.management2.service;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -71,15 +72,15 @@ class StudentServiceTest {
     StudentDetail expected = new StudentDetail(student, studentsCourses);
     StudentDetail actual = sut.searchStudent(studentId);
 
-//    // 検証
-//    assertNotNull(actual);
-//    assertEquals(student, actual.getStudent());
-//    assertEquals(studentsCourses, actual.getStudentsCourseList());
-//
+
     verify(repository, times(1)).searchStudent(studentId);
     verify(repository, times(1)).searchStudentCourse(studentId);
     Assertions.assertEquals(expected, actual);
   }
+//    // 検証
+//    assertNotNull(actual);
+//    assertEquals(student, actual.getStudent());
+//    assertEquals(studentsCourses, actual.getStudentsCourseList());
 
   @Test
   void 受講生詳細検索_存在しないIDを指定した場合_StudentNotFoundExceptionが発生すること() {
@@ -111,25 +112,45 @@ class StudentServiceTest {
 
   @Test
   void 受講生詳細の登録_リポジトリの処理が適切に呼び出せていること() {
-    // 事前準備
-    StudentDetail studentDetail = new StudentDetail();
-    Student student = new Student("1","山田愛子", "やまだあいこ", "アイコ", "aiko@gmail.com","大阪",22,"女性","",false);
-    student.setId("1");
-    studentDetail.setStudent(student);
-
-    List<StudentsCourse> studentsCourses = new ArrayList<>();
-    StudentsCourse course = new StudentsCourse();
-    course.setStudentId("1");
-    studentsCourses.add(course);
-    studentDetail.setStudentsCourseList(studentsCourses);
+    // ★ダミーデータは中身不要★
+    StudentDetail detail = new StudentDetail(
+        new Student(),                // フィールド未設定OK
+        List.of(new StudentsCourse()) // 空インスタンスでOK
+    );
 
     // 実行
-    sut.registerStudent(studentDetail);
+    StudentDetail result = sut.registerStudent(detail);
 
-    // 検証
-    verify(repository, times(1)).registerStudent(student);
-    verify(repository, times(1)).registerStudentCourse(course);
+    // 戻り値はそのまま返ってくることを確認
+    assertSame(detail, result);
+
+    // リポジトリ呼び出し検証
+    verify(repository, times(1)).registerStudent(detail.getStudent());
+    verify(repository, times(1)).registerStudentCourse(detail.getStudentsCourseList().get(0));
+
+    // それ以上の呼び出しはないこと
+    verifyNoMoreInteractions(repository);
   }
+
+//    // 事前準備
+//    StudentDetail studentDetail = new StudentDetail();
+//    Student student = new Student("1","山田愛子", "やまだあいこ", "アイコ", "aiko@gmail.com","大阪",22,"女性","",false);
+//    student.setId("1");
+//    studentDetail.setStudent(student);
+//
+//    List<StudentsCourse> studentsCourses = new ArrayList<>();
+//    StudentsCourse course = new StudentsCourse();
+//    course.setStudentId("1");
+//    studentsCourses.add(course);
+//    studentDetail.setStudentsCourseList(studentsCourses);
+//
+//    // 実行
+//    sut.registerStudent(studentDetail);
+//
+//    // 検証
+//    verify(repository, times(1)).registerStudent(student);
+//    verify(repository, times(1)).registerStudentCourse(course);
+//  }
 
   @Test
   void 受講生詳細の登録_学生がnullの場合はIllegalArgumentExceptionが発生すること() {
@@ -171,11 +192,11 @@ class StudentServiceTest {
   @Test
   void 受講生の更新_リポジトリの処理が適切に呼び出せていること() {
     // 事前準備
-    Student student = new Student("2", "佐藤太郎", "さとうたろう", "タロ", "taro@gmail.com", "東京", 25, "男性", "", false);
+    Student student = new Student();
     StudentsCourse studentsCourse = new StudentsCourse();
     List<StudentsCourse> studentsCourses = List.of(studentsCourse);
     StudentDetail studentDetail = new StudentDetail(student, studentsCourses);
-
+    //
     sut.updateStudent(studentDetail);
     // 検証
     verify(repository, times(1)).updateStudent(student);

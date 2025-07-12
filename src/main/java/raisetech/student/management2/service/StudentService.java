@@ -145,9 +145,8 @@ public class StudentService {
     @Transactional
     public void updateStudent (StudentDetail studentDetail){
       repository.updateStudent(studentDetail.getStudent());
-      //学生の登録情報を更新処理する
+      //学生の登録情報を更新処理する>>駄目な実装
       //  studentsCourses.setStudentId(studentDetail.getStudent().getId());
-      //駄目な実装
       studentDetail.getStudentsCourseList()
           .forEach(studentCourse -> repository.updateStudentCourse(studentCourse));
 
