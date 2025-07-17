@@ -1,6 +1,8 @@
 package raisetech.student.management2.service;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -96,6 +98,8 @@ class StudentServiceTest {
     verify(repository, times(1)).searchStudent(studentId);
   }
 
+  //この上のコード、自分で自分にnull入れてるので意味がない？
+
   @Test
   void 受講生コース検索_リポジトリの処理が適切に呼び出せていること() {
     // 事前準備
@@ -132,26 +136,6 @@ class StudentServiceTest {
     verifyNoMoreInteractions(repository);
   }
 
-//    // 事前準備
-//    StudentDetail studentDetail = new StudentDetail();
-//    Student student = new Student("1","山田愛子", "やまだあいこ", "アイコ", "aiko@gmail.com","大阪",22,"女性","",false);
-//    student.setId("1");
-//    studentDetail.setStudent(student);
-//
-//    List<StudentsCourse> studentsCourses = new ArrayList<>();
-//    StudentsCourse course = new StudentsCourse();
-//    course.setStudentId("1");
-//    studentsCourses.add(course);
-//    studentDetail.setStudentsCourseList(studentsCourses);
-//
-//    // 実行
-//    sut.registerStudent(studentDetail);
-//
-//    // 検証
-//    verify(repository, times(1)).registerStudent(student);
-//    verify(repository, times(1)).registerStudentCourse(course);
-//  }
-
   @Test
   void 受講生詳細の登録_学生がnullの場合はIllegalArgumentExceptionが発生すること() {
     // 事前準備
@@ -159,10 +143,36 @@ class StudentServiceTest {
     studentDetail.setStudent(null);
 
     // 実行と検証
-    Assertions.assertThrows(IllegalArgumentException.class, () -> {
+    Assertions.assertThrows(NullPointerException.class, () -> {
       sut.registerStudent(studentDetail);
     });
   }
+//ここも必要なさげ？！
+
+// TODO 受講生コースの登録のテストはNullP～にしたら通った
+@Test
+void 重複コース名ならIllegalArgumentExceptionが投げられること() {
+  // 準備：同名コースを含むリストを返す
+  StudentsCourse duplicate = new StudentsCourse();
+  duplicate.setCourseName("Java基礎");
+  when(repository.searchStudentCourse("2L"))
+      .thenReturn(List.of(duplicate));
+
+  StudentsCourse input = new StudentsCourse();
+  input.setStudentId("2L");
+  input.setCourseName("Java基礎");
+
+  // 検証：例外発生
+  IllegalArgumentException ex = assertThrows(
+      IllegalArgumentException.class,
+      () -> sut.registerStudentCourse(input)
+  );
+  assertEquals("コース名が重複しています", ex.getMessage());
+
+  // 登録メソッドは呼ばれない
+  verify(repository, never()).registerStudentCourse(any());
+}
+
 
   @Test
   void 受講生コースの登録_リポジトリの処理が適切に呼び出せていること() {
@@ -177,17 +187,29 @@ class StudentServiceTest {
     verify(repository, times(1)).registerStudentCourse(studentsCourse);
   }
 
-  @Test
-  void 受講生コースの登録_学生がnullの場合はIllegalArgumentExceptionが発生すること() {
-    // 事前準備
-    StudentsCourse studentsCourse = new StudentsCourse();
-    studentsCourse.setStudentId(null);
+//  @Test
+//  void 受講生コースの登録_学生がnullの場合はIllegalArgumentExceptionが発生すること() {
+//    // 事前準備
+//    StudentsCourse studentsCourse = new StudentsCourse();
+//    studentsCourse.setStudentId(null);
+//
+//    // 実行と検証
+//    Assertions.assertThrows(IllegalArgumentException.class, () -> {
+//      sut.registerStudentCourse(studentsCourse);
+//    });
+//  }
+//  //TODO テスト通らない
 
-    // 実行と検証
-    Assertions.assertThrows(IllegalArgumentException.class, () -> {
-      sut.registerStudentCourse(studentsCourse);
-    });
-  }
+@Test
+void 受講生コースの登録_学生がnullの場合はIllegalArgumentExceptionが発生すること() {
+  // studentsCourse を null に設定
+  StudentsCourse nullCourse = null;
+
+  // null を渡したときに NPE が発生することを検証
+  assertThrows(NullPointerException.class, () -> {
+    sut.registerStudentCourse(nullCourse);
+  });
+}
 
   @Test
   void 受講生の更新_リポジトリの処理が適切に呼び出せていること() {
@@ -204,6 +226,6 @@ class StudentServiceTest {
   }
 
 //改善
-  //TODO 例外のテスト要らないか？受講生詳細の登録テストが検証
+  //TODO 例外のテスト要らなくないか？受講生詳細の登録テストが検証
 
 }

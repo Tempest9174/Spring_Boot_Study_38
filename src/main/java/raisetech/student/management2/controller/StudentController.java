@@ -68,7 +68,6 @@ public class StudentController {
    * @param id 受講生ID
    * @return 受講生詳細
    */
-
   @Operation(summary = "受講生詳細検索", description = "受講生詳細を検索します", responses =
       {@ApiResponse(responseCode = "200",description = "idに応じた学生が検索される", content = @Content(mediaType = "application/json", schema = @Schema(implementation = StudentDetail.class))),
           @ApiResponse(responseCode = "404", description ="指定した学生は存在しません",content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
@@ -88,7 +87,6 @@ public class StudentController {
 //    if (student == null) {
 //      throw new StudentNotFoundException("指定されたIDの受講生は存在しません");
 //    }
-
 
     return student;
   }
@@ -132,7 +130,6 @@ public class StudentController {
    * @param studentsCourse 受講生コース情報
    * @return 実行結果
    */
-
   @Operation(summary = "受講生コース登録", description = "受講生コース情報を登録します", responses =
       {@ApiResponse(responseCode = "200", description = "登録成功", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MessageResponse.class))),
           @ApiResponse(responseCode = "400", description = "入力が不適切です", content = @Content(mediaType = "application/json" , schema = @Schema(implementation = ErrorResponse.class))),
