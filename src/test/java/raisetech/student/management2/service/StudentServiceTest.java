@@ -228,4 +228,4 @@ void 受講生コースの登録_学生がnullの場合はIllegalArgumentExcepti
 //改善
   //TODO 例外のテスト要らなくないか？受講生詳細の登録テストが検証
 
-}
+  }
