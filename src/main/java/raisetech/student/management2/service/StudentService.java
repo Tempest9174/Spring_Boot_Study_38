@@ -16,12 +16,12 @@ import raisetech.student.management2.domain.StudentDetail;
 import raisetech.student.management2.exception.StudentNotFoundException;
 import raisetech.student.management2.repository.StudentRepository;
 
-/**
- * 受講生情報を取り扱うサービス
- * 検索や・登録更新処理を行う
- */
-@Service
-public class StudentService {
+  /**
+  * 受講生情報を取り扱うサービス
+  * 検索や・登録更新処理を行う
+  */
+  @Service
+  public class StudentService {
 
   private StudentRepository repository;
   private StudentConverter converter;
@@ -55,14 +55,14 @@ public class StudentService {
    */
   public  StudentDetail searchStudent(String id) {
 
-    Student student = repository.searchStudent(id);
-    if (Objects.isNull(student)) {
+      Student student = repository.searchStudent(id);
+       if (Objects.isNull(student)) {
 
         throw new StudentNotFoundException("指定されたIDの学生が見つかりません: " + id);
       }
       List<StudentsCourse> studentCourse = repository.searchStudentCourse(student.getId());
       return new StudentDetail(student, studentCourse);
-    }
+  }
 
 
     /**
@@ -83,7 +83,6 @@ public class StudentService {
      *
      * @return 登録情報を付与した受講生詳細
      */
-
     @Transactional
     public StudentDetail registerStudent (StudentDetail studentDetail){
       //準備
@@ -95,7 +94,6 @@ public class StudentService {
         //TODO：講師はstudent.getId()にしている。付けるとエラー
         repository.registerStudentCourse(studentsCourse);
       });
-
       return studentDetail;
     }
 
@@ -112,14 +110,17 @@ public class StudentService {
       studentsCourse.setCourseEndAt(Date.valueOf(now().plusYears(1)));
     }
 //TODO: コース情報の登録も行う
+
   /**
    * 受講生コース情報の登録を行う
    * @param studentsCourse 受講生コース情報
    */
-
   @Transactional
   public void registerStudentCourse (StudentsCourse studentsCourse){
     Date now = Date.valueOf(now());
+    if (studentsCourse == null) {
+      throw new IllegalArgumentException("studentsCourse は必須です");
+    }
 
     //ダミー出力
     System.out.println("受講生コース情報の登録を行います");
@@ -133,11 +134,10 @@ public class StudentService {
       throw new IllegalArgumentException("コース名が重複しています");
     }
     //コース名が重複していない場合は登録
-
     repository.registerStudentCourse(studentsCourse);
   }
 
-  /**
+    /**
      * 受講生詳細の更新を行う
      * 受講生情報と受講生コース情報を個別に更新する
      * @param studentDetail 受講生詳細
@@ -145,7 +145,7 @@ public class StudentService {
     @Transactional
     public void updateStudent (StudentDetail studentDetail){
       repository.updateStudent(studentDetail.getStudent());
-      //学生の登録情報を更新処理する>>駄目な実装
+      //学生の登録情報を更新処理する>>駄目な実装か？
       //  studentsCourses.setStudentId(studentDetail.getStudent().getId());
       studentDetail.getStudentsCourseList()
           .forEach(studentCourse -> repository.updateStudentCourse(studentCourse));
