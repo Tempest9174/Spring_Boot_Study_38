@@ -206,7 +206,7 @@ void 受講生コースの登録_学生がnullの場合はIllegalArgumentExcepti
   StudentsCourse nullCourse = null;
 
   // null を渡したときに NPE が発生することを検証
-  assertThrows(NullPointerException.class, () -> {
+  assertThrows(IllegalArgumentException.class, () -> {
     sut.registerStudentCourse(nullCourse);
   });
 }

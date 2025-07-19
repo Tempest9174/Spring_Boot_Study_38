@@ -118,6 +118,9 @@ import raisetech.student.management2.repository.StudentRepository;
   @Transactional
   public void registerStudentCourse (StudentsCourse studentsCourse){
     Date now = Date.valueOf(now());
+    if (studentsCourse == null) {
+      throw new IllegalArgumentException("studentsCourse は必須です");
+    }
 
     //ダミー出力
     System.out.println("受講生コース情報の登録を行います");
