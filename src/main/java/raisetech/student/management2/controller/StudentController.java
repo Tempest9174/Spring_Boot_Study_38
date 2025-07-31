@@ -144,7 +144,7 @@ public class StudentController {
           @ApiResponse(responseCode = "400", description = "入力が不適切です", content = @Content(mediaType = "application/json" , schema = @Schema(implementation = ErrorResponse.class))),
           @ApiResponse(responseCode = "500", description = "サーバーエラー", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))})
   @PostMapping("/addCourse")
-  public ResponseEntity<MessageResponse> registerStudentCourse (@RequestBody StudentsCourse
+  public ResponseEntity<MessageResponse> registerStudentCourse (@Valid @RequestBody StudentsCourse
       studentsCourse){
     service.registerStudentCourse(studentsCourse);
     return ResponseEntity.ok(new MessageResponse("登録を実行しました"));

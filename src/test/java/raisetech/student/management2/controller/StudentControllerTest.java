@@ -49,6 +49,7 @@ class StudentControllerTest {
   @Test
   void 受講生詳細の受講生でIDに数字以外を用いた時入力チェックにかかること() {
     Student student = new Student();
+    //TODO セットメソッドを書く
     student.setId("テストです");
 
     Set<ConstraintViolation<Student>> violations = validator.validate(student);
@@ -56,4 +57,4 @@ class StudentControllerTest {
     assertEquals(7,violations.size());
   }
 }
-//TODO 予想が7：実際5確認30分辺りからよくわからない
+//TODO 予想が7：実際5確認30分辺りからよくわからない　AssertThat
