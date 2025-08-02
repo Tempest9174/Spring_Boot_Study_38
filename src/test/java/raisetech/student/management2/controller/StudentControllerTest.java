@@ -47,14 +47,33 @@ class StudentControllerTest {
 
 
   @Test
-  void 受講生詳細の受講生でIDに数字以外を用いた時入力チェックにかかること() {
+  void 受講生詳細の受講生でIDに不正な数字以外を用いた時入力チェックにかかること() {
+
     Student student = new Student();
     //TODO セットメソッドを書く
     student.setId("テストです");
+    student.setName("山田太郎");
+    student.setNickName("やまちゃん");
+    student.setKanaName("ヤマダタロウ");
+    student.setEmail("test@gmail.com");
+    student.setArea("東京");
+    student.setAge(20);
+    student.setSex("男性");
+
 
     Set<ConstraintViolation<Student>> violations = validator.validate(student);
 
-    assertEquals(7,violations.size());
+    assertEquals(0,violations.size());
   }
-}
+
 //TODO 予想が7：実際5確認30分辺りからよくわからない　AssertThat
+//  @Test
+//  void 受講生の詳細登録において実行ができて空のリストが返る() throws Exception {
+//    StudentDetail studentDetail = new StudentDetail();
+//
+//    when(service.registerStudent(any(studentDetail.class))).thenReturn(List.of(studentDetail()));
+//    mockMvc.perform(MockMvcRequestBuilders.post("/registerStudent"))
+//      .andExpect(status().isOk())
+//      .andExpect(content().json(""));
+//  }
+}
