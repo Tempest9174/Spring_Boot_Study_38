@@ -47,6 +47,26 @@ class StudentControllerTest {
 
 
   @Test
+  void 受講生詳細の検索が実行できて空で返ってくる() throws Exception {
+    String id = "99";
+    when(service.searchStudent(id)).thenReturn(new StudentDetail());
+    mockMvc.perform(MockMvcRequestBuilders.get("/student/" + id))
+        .andExpect(status().isOk());
+
+    verify(service, times(1)).searchStudent(id);
+  }
+
+  @Test
+  void 受講生詳細の検索が実行できずに400エラーで返ってくる() throws Exception {
+    String id = "100";
+    when(service.searchStudent(id)).thenReturn(new StudentDetail());
+    mockMvc.perform(MockMvcRequestBuilders.get("/student/" + id))
+        .andExpect(status().isBadRequest());
+
+    verify(service, times(1)).searchStudent(id);
+  }
+
+  @Test
   void 受講生詳細の受講生でIDに不正な数字以外を用いた時入力チェックにかかること() {
 
     Student student = new Student();
