@@ -7,6 +7,8 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import static org.mockito.Mockito.verifyNoInteractions;
+
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
@@ -17,6 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -62,8 +65,22 @@ class StudentControllerTest {
     when(service.searchStudent(id)).thenReturn(new StudentDetail());
     mockMvc.perform(MockMvcRequestBuilders.get("/student/" + id))
         .andExpect(status().isBadRequest());
+    //サービスが呼ばれないことを検証
+    verifyNoInteractions(service);
+  }
+  @Test
+  void 受講生詳細の登録が実行できて空のリストが返る() throws Exception {
+      mockMvc.perform(post("/registerStudent")
+          .contentType(MediaType.APPLICATION_JSON)
+          .content("{}"))
+          .andExpect(status().isOk())
+          .andExpect(content().json("[]"));
+      verify(service, times(1)).registerStudent(new StudentDetail());
+  }
 
-    verify(service, times(1)).searchStudent(id);
+  @Test
+  void 受講生詳細の更新が実行できて空のリストが返る() throws Exception {
+
   }
 
   @Test

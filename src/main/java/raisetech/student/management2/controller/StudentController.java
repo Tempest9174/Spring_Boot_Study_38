@@ -92,11 +92,6 @@ public class StudentController {
     // サービス層で受講生を検索
     StudentDetail student = service.searchStudent(id);
 
-    // 404 Not Found のチェック
-//    if (student == null) {
-//      throw new StudentNotFoundException("指定されたIDの受講生は存在しません");
-//    }
-
     return student;
   }
 //難しい箇所:AIツールの使い方
