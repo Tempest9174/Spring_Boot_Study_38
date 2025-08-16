@@ -32,7 +32,6 @@ public class StudentConverter {
     //下の行コーディングsが怪しい
     //生徒IDとコースの生徒IDが一致したら
     //生徒コースリストにコースを追加??
-    //下何やってるって？
     //生徒詳細にconvert生徒コースリストをセット
     //生徒詳細リストに生徒詳細を追加
     studentList.forEach(student -> {
