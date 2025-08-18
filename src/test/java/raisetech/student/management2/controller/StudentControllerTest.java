@@ -158,22 +158,21 @@ class StudentControllerTest {
   }
 
   @Test
-  void 数字123は3桁で不正なので400が返ってくる() throws Exception {
-    mockMvc.perform(get("/student/123"))
-        .andExpect(status().isBadRequest());
-
-    verify(service, never()).searchStudent(anyString()); // 早期リターンを確認
+  void 旧API_student_にアクセスすると空として400とメッセージが返る() throws Exception {
+    mockMvc.perform(get("/student"))
+        .andExpect(status().isBadRequest())
+        .andExpect(content().string("このAPIは現在利用できません。古いURLとなっています。"));
   }
-//  受講生詳細でIDに存在しない数字を用いた時、受講生が見つからない例外が発生することを確認するテスト
 
   @Test
-  void 受講生詳細の例外APIが実行できステータス400で返る() throws Exception {
-    mockMvc.perform(get("/exception"))
-        .andExpect(status().is4xxClientError())
-        .andExpect(content().string("{\"Not Found\\n\" +\n"
-            + "        \"Validation failed: \" +\n"
-            + "        ex.getMessage()}"));
+  void 旧API_student_スラッシュ付きも同様に400メッセージが返る() throws Exception {
+    mockMvc.perform(get("/student/"))
+        .andExpect(status().isBadRequest())
+        .andExpect(content().string("このAPIは現在利用できません。古いURLとなっています。"));
   }
+
+
+
 
   @Test
   void 受講生詳細の受講生でIDに不正な数字以外を用いた時入力チェックにかかること() throws Exception {
@@ -200,10 +199,4 @@ class StudentControllerTest {
 //  @Test
 //  void 受講生の詳細登録において実行ができて空のリストが返る() throws Exception {
 //    StudentDetail studentDetail = new StudentDetail();
-//
-//    when(service.registerStudent(any(studentDetail.class))).thenReturn(List.of(studentDetail()));
-//    mockMvc.perform(MockMvcRequestBuilders.post("/registerStudent"))
-//      .andExpect(status().isOk())
-//      .andExpect(content().json(""));
-//  }
 
