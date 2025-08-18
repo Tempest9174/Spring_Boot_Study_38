@@ -14,7 +14,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.mockito.Mockito.verifyNoInteractions;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -28,11 +27,14 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+//import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+// Staticimportの記述
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import raisetech.student.management2.data.Student;
-import raisetech.student.management2.data.StudentsCourse;
-import raisetech.student.management2.controller.StudentController;
 import raisetech.student.management2.domain.StudentDetail;
 import raisetech.student.management2.service.StudentService;
 
@@ -53,7 +55,7 @@ class StudentControllerTest {
   @Test
   void 受講生詳細の一覧検索が実行でき空のリストが返る() throws Exception {
     when(service.searchStudentList()).thenReturn(List.of(new StudentDetail()));
-    mockMvc.perform(MockMvcRequestBuilders.get("/studentList"))
+    mockMvc.perform(get("/studentList"))
         .andExpect(status().isOk());
     // .andExpect(content().json("[{\"student\":null,\"studentsCourseList\":null}]"));
 
@@ -65,7 +67,7 @@ class StudentControllerTest {
   void 受講生詳細の検索が実行できて空で返ってくる() throws Exception {
     String id = "99";
     when(service.searchStudent(id)).thenReturn(new StudentDetail());
-    mockMvc.perform(MockMvcRequestBuilders.get("/student/" + id))
+    mockMvc.perform(get("/student/" + id))
         .andExpect(status().isOk());
 
     verify(service, times(1)).searchStudent(id);
@@ -75,7 +77,7 @@ class StudentControllerTest {
   void 受講生詳細の検索が実行できずに400エラーで返ってくる() throws Exception {
     String id = "100";
     when(service.searchStudent(id)).thenReturn(new StudentDetail());
-    mockMvc.perform(MockMvcRequestBuilders.get("/student/" + id))
+    mockMvc.perform(get("/student/" + id))
         .andExpect(status().isBadRequest());
     //サービスが呼ばれないことを検証
     verifyNoInteractions(service);
@@ -157,18 +159,21 @@ class StudentControllerTest {
 
   @Test
   void 数字123は3桁で不正なので400が返ってくる() throws Exception {
-    mockMvc.perform(MockMvcRequestBuilders.get("/student/123"))
+    mockMvc.perform(get("/student/123"))
         .andExpect(status().isBadRequest());
 
     verify(service, never()).searchStudent(anyString()); // 早期リターンを確認
   }
+//  受講生詳細でIDに存在しない数字を用いた時、受講生が見つからない例外が発生することを確認するテスト
 
-//  @Test
-//  void 受講生詳細の例外APIが実行できステータス400で返る() throws Exception {
-//    mockMvc.perform(MockMvcRequestBuilders.get("/exception"))
-//        .andExpect(status().is4xxClientError())
-//        .andExpect(content().string("{\"message\":\"受講生詳細の例外APIが実行されました\"}"));
-//  }
+  @Test
+  void 受講生詳細の例外APIが実行できステータス400で返る() throws Exception {
+    mockMvc.perform(get("/exception"))
+        .andExpect(status().is4xxClientError())
+        .andExpect(content().string("{\"Not Found\\n\" +\n"
+            + "        \"Validation failed: \" +\n"
+            + "        ex.getMessage()}"));
+  }
 
   @Test
   void 受講生詳細の受講生でIDに不正な数字以外を用いた時入力チェックにかかること() throws Exception {

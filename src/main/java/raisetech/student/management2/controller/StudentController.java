@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Size;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.ErrorResponse;
@@ -167,6 +168,18 @@ public class StudentController {
 
     return ResponseEntity.ok(new MessageResponse("更新を実行しました"));
   }
+
+  /**
+   *受講生詳細のパラメータがない場合の処理
+   * @return エラーメッセージ
+   */
+  @GetMapping({"/student","/student/"})
+  public ResponseEntity<String> getStudentWithoutId() {
+    return ResponseEntity
+        .status(HttpStatus.BAD_REQUEST)
+        .body("このAPIは現在利用できません。古いURLとなっています。");
+  }
+
 
   /**
    * idからコース情報を取得します。
