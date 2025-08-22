@@ -32,7 +32,7 @@ public class StudentConverterTest {
     void testConvertStudentDetails_withMultipleCourses() {
       // Given (前提条件)
       // 学生リストを作成
-      // Studentクラスのコンストラクタに合わせて引数を渡します
+      // Studentクラスのコンストラクタに合わせて引数を渡す
       Student student1 = new Student(); // NoArgsConstructorを使用
       student1.setId("S001");
       student1.setName("田中太郎");

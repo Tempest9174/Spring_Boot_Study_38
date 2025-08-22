@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>受講生管理システム</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="container">
+  <!-- Header -->
+  <div class="header">
+    <h1><i class="fas fa-graduation-cap"></i> 受講生管理システム</h1>
+    <p>学生の情報とコース管理を効率的に行うためのシステムです</p>
+  </div>
+
+  <!-- Navigation Tabs -->
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="switchTab('dashboard')">
+      <i class="fas fa-chart-bar"></i> ダッシュボード
+    </button>
+    <button class="nav-tab" onclick="switchTab('students')">
+      <i class="fas fa-users"></i> 受講生一覧
+    </button>
+    <button class="nav-tab" onclick="switchTab('courses')">
+      <i class="fas fa-book-open"></i> コース一覧
+    </button>
+  </div>
+
+  <!-- Dashboard Section -->
+  <div id="dashboard" class="content-section active">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value" id="totalStudents">0</div>
+        <div class="stat-label">総受講生数</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="totalCourses">0</div>
+        <div class="stat-label">総コース数</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="activeStudents">0</div>
+        <div class="stat-label">アクティブ受講生</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="avgAge">0</div>
+        <div class="stat-label">平均年齢</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Students Section -->
+  <div id="students" class="content-section">
+    <div class="controls">
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="受講生を検索..." onkeyup="filterStudents()">
+        <i class="fas fa-search"></i>
+      </div>
+      <button class="btn btn-primary" onclick="openModal('add')">
+        <i class="fas fa-plus"></i> 新規登録
+      </button>
+    </div>
+
+    <div id="studentsGrid" class="cards-grid">
+      <!-- Students will be loaded here -->
+    </div>
+
+    <div id="loadingStudents" class="loading" style="display: none;">
+      <div class="loader"></div>
+      <p>読み込み中...</p>
+    </div>
+  </div>
+
+  <!-- Courses Section -->
+  <div id="courses" class="content-section">
+    <div class="controls">
+      <div class="search-box">
+        <input type="text" id="courseSearchInput" placeholder="コースを検索..." onkeyup="filterCourses()">
+        <i class="fas fa-search"></i>
+      </div>
+      <button class="btn btn-primary" onclick="openCourseModal('add')">
+        <i class="fas fa-plus"></i> コース追加
+      </button>
+    </div>
+
+    <div id="coursesGrid" class="cards-grid">
+      <!-- Courses will be loaded here -->
+    </div>
+  </div>
+</div>
+
+<!-- Student Modal -->
+<div id="studentModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 class="modal-title" id="modalTitle">受講生登録</h3>
+      <button class="close-btn" onclick="closeModal()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <form id="studentForm">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">名前 *</label>
+          <input type="text" class="form-input" id="studentName" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">ふりがな</label>
+          <input type="text" class="form-input" id="studentKana">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">ニックネーム</label>
+          <input type="text" class="form-input" id="studentNickname">
+        </div>
+        <div class="form-group">
+          <label class="form-label">年齢 *</label>
+          <input type="number" class="form-input" id="studentAge" required min="1" max="100">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">メールアドレス *</label>
+        <input type="email" class="form-input" id="studentEmail" required>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">居住地域</label>
+          <input type="text" class="form-input" id="studentArea">
+        </div>
+        <div class="form-group">
+          <label class="form-label">性別</label>
+          <select class="form-input" id="studentGender">
+            <option value="">選択してください</option>
+            <option value="男性">男性</option>
+            <option value="女性">女性</option>
+            <option value="その他">その他</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">備考</label>
+        <textarea class="form-input" id="studentRemark" rows="3" style="resize: vertical;"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">受講コース（複数選択可能）</label>
+        <div id="courseSelection" class="course-selection">
+          <!-- Courses will be loaded here -->
+        </div>
+      </div>
+      <div class="form-group" style="margin-top: 30px;">
+        <button type="submit" class="btn btn-primary" style="width: 100%;">
+          <i class="fas fa-save"></i> 保存
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Course Modal -->
+<div id="courseModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 class="modal-title" id="courseModalTitle">コース追加</h3>
+      <button class="close-btn" onclick="closeCourseModal()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <form id="courseForm">
+      <div class="form-group">
+        <label class="form-label">コース名 *</label>
+        <input type="text" class="form-input" id="courseName" required>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">開始日</label>
+          <input type="date" class="form-input" id="courseStartDate">
+        </div>
+        <div class="form-group">
+          <label class="form-label">終了日</label>
+          <input type="date" class="form-input" id="courseEndDate">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">説明</label>
+        <textarea class="form-input" id="courseDescription" rows="3" style="resize: vertical;" placeholder="コースの詳細説明を入力してください"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">対象受講生（任意）</label>
+        <select class="form-input" id="courseStudentId">
+          <option value="">受講生を選択（空白で全体向けコース）</option>
+          <!-- Students will be loaded here -->
+        </select>
+      </div>
+      <div class="form-group" style="margin-top: 30px;">
+        <button type="submit" class="btn btn-primary" style="width: 100%;">
+          <i class="fas fa-save"></i> 保存
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+<link rel="stylesheet" href="./styles.css">
+
+<script src="./js/app.js?v=2"></script>
+<script>
+  if (typeof window.switchTab !== 'function') {
+    window.switchTab = function (tabName) {
+      document.querySelectorAll('.content-section').forEach(function (sec) { sec.classList.remove('active'); });
+      var el = document.getElementById(tabName); if (el) el.classList.add('active');
+      document.querySelectorAll('.nav-tab').forEach(function (btn) {
+        var oc = btn.getAttribute('onclick') || '';
+        btn.classList.toggle('active', oc.indexOf("'" + tabName + "'") !== -1 || oc.indexOf('"' + tabName + '"') !== -1);
+      });
+    };
+  }
+</script>
+
+</body>
+</html>

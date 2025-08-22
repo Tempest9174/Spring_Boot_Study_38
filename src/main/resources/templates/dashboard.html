@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>受講生管理ダッシュボード</title>
+  <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 2rem;
+        color: #2d3748;
+    }
+
+    .container {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .header h1 {
+        color: white;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .header p {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 1.1rem;
+    }
+
+    .search-container {
+        background: white;
+        border-radius: 16px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(10px);
+    }
+
+    .search-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .search-field {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .search-field label {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: #4a5568;
+        font-size: 0.9rem;
+    }
+
+    .search-field input,
+    .search-field select {
+        padding: 0.75rem;
+        border: 2px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+        background: #f7fafc;
+    }
+
+    .search-field input:focus,
+    .search-field select:focus {
+        outline: none;
+        border-color: #667eea;
+        background: white;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .search-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        margin-top: 1rem;
+    }
+
+    .btn {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 0.95rem;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-secondary {
+        background: #e2e8f0;
+        color: #4a5568;
+    }
+
+    .btn-secondary:hover {
+        background: #cbd5e0;
+    }
+
+    .stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .stat-card {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    .stat-number {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #667eea;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+        color: #718096;
+        font-size: 0.9rem;
+    }
+
+    .cards-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .student-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    }
+
+    .student-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .student-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+    }
+
+    .student-avatar {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+
+    .student-basic {
+        flex: 1;
+        margin-left: 1rem;
+    }
+
+    .student-name {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #2d3748;
+        margin-bottom: 0.25rem;
+    }
+
+    .student-id {
+        color: #718096;
+        font-size: 0.9rem;
+    }
+
+    .student-details {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+    }
+
+    .detail-item {
+        display: flex;
+        align-items: center;
+        font-size: 0.9rem;
+    }
+
+    .detail-label {
+        font-weight: 600;
+        color: #4a5568;
+        margin-right: 0.5rem;
+        min-width: 60px;
+    }
+
+    .detail-value {
+        color: #2d3748;
+    }
+
+    .courses-section {
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid #e2e8f0;
+    }
+
+    .courses-title {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #4a5568;
+        margin-bottom: 0.5rem;
+    }
+
+    .course-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .course-tag {
+        padding: 0.25rem 0.75rem;
+        background: #edf2f7;
+        color: #2d3748;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        font-weight: 500;
+    }
+
+    .status-badge {
+        padding: 0.25rem 0.75rem;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+
+    .status-active {
+        background: #c6f6d5;
+        color: #22543d;
+    }
+
+    .status-deleted {
+        background: #fed7d7;
+        color: #742a2a;
+    }
+
+    .card-actions {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 1rem;
+        justify-content: flex-end;
+    }
+
+    .btn-small {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .btn-edit {
+        background: #bee3f8;
+        color: #2b6cb0;
+    }
+
+    .btn-edit:hover {
+        background: #90cdf4;
+    }
+
+    .btn-view {
+        background: #c6f6d5;
+        color: #22543d;
+    }
+
+    .btn-view:hover {
+        background: #9ae6b4;
+    }
+
+    .no-results {
+        text-align: center;
+        padding: 3rem;
+        color: #718096;
+        grid-column: 1 / -1;
+    }
+
+    .no-results-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+    }
+
+    @media (max-width: 768px) {
+        body {
+            padding: 1rem;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+        }
+
+        .search-container {
+            padding: 1.5rem;
+        }
+
+        .cards-container {
+            grid-template-columns: 1fr;
+        }
+
+        .student-details {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .loading {
+        text-align: center;
+        padding: 2rem;
+        color: #718096;
+        grid-column: 1 / -1;
+    }
+
+    .spinner {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        border: 4px solid #e2e8f0;
+        border-radius: 50%;
+        border-top-color: #667eea;
+        animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>受講生管理ダッシュボード</h1>
+    <p>学習者の情報を一覧で確認・検索できます</p>
+  </div>
+
+  <!-- 検索フィルター -->
+  <div class="search-container">
+    <div class="search-grid">
+      <div class="search-field">
+        <label for="searchName">名前</label>
+        <input type="text" id="searchName" placeholder="名前を入力">
+      </div>
+      <div class="search-field">
+        <label for="searchEmail">メールアドレス</label>
+        <input type="email" id="searchEmail" placeholder="メールアドレスを入力">
+      </div>
+      <div class="search-field">
+        <label for="searchArea">地域</label>
+        <input type="text" id="searchArea" placeholder="地域を入力">
+      </div>
+      <div class="search-field">
+        <label for="searchAge">年齢</label>
+        <select id="searchAge">
+          <option value="">全て</option>
+          <option value="18-25">18-25歳</option>
+          <option value="26-35">26-35歳</option>
+          <option value="36-45">36-45歳</option>
+          <option value="46+">46歳以上</option>
+        </select>
+      </div>
+      <div class="search-field">
+        <label for="searchSex">性別</label>
+        <select id="searchSex">
+          <option value="">全て</option>
+          <option value="男性">男性</option>
+          <option value="女性">女性</option>
+          <option value="その他">その他</option>
+        </select>
+      </div>
+      <div class="search-field">
+        <label for="searchCourse">コース</label>
+        <input type="text" id="searchCourse" placeholder="コース名を入力">
+      </div>
+    </div>
+    <div class="search-actions">
+      <button class="btn btn-primary" onclick="applyFilters()">検索</button>
+      <button class="btn btn-secondary" onclick="clearFilters()">クリア</button>
+    </div>
+  </div>
+
+  <!-- 統計情報 -->
+  <div class="stats">
+    <div class="stat-card">
+      <div class="stat-number" id="totalStudents">0</div>
+      <div class="stat-label">総受講生数</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" id="activeStudents">0</div>
+      <div class="stat-label">アクティブ</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" id="totalCourses">0</div>
+      <div class="stat-label">総コース数</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" id="avgAge">0</div>
+      <div class="stat-label">平均年齢</div>
+    </div>
+  </div>
+
+  <!-- カード表示エリア -->
+  <div id="cardsContainer" class="cards-container">
+    <div class="loading">
+      <div class="spinner"></div>
+      <p>データを読み込んでいます...</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  let studentsData = [];
+  let filteredData = [];
+
+  // ページ読み込み完了後にリアルタイム検索を設定
+  document.addEventListener('DOMContentLoaded', function() {
+      fetchStudentData();
+      setupRealtimeSearch();
+  });
+
+  async function fetchStudentData() {
+      try {
+          const response = await fetch('/studentList');
+          if (!response.ok) {
+              throw new Error('Network response was not ok');
+          }
+          studentsData = await response.json();
+          filteredData = [...studentsData];
+          renderStudentCards();
+          updateStatistics();
+          console.log('データが正常に読み込まれました:', studentsData.length, '件');
+      } catch (error) {
+          console.error('データの取得に失敗しました:', error);
+          document.getElementById('cardsContainer').innerHTML = `
+              <div class="no-results">
+                  <div class="no-results-icon">⚠️</div>
+                  <h3>データの読み込みに失敗しました</h3>
+                  <p>しばらく待ってから再度お試しください</p>
+              </div>
+          `;
+      }
+  }
+
+  function renderStudentCards() {
+      const container = document.getElementById('cardsContainer');
+
+      if (filteredData.length === 0) {
+          if (studentsData.length === 0) {
+              container.innerHTML = `
+                  <div class="no-results">
+                      <div class="no-results-icon">📚</div>
+                      <h3>受講生データがありません</h3>
+                      <p>まずは受講生を登録してください</p>
+                  </div>
+              `;
+          } else {
+              container.innerHTML = `
+                  <div class="no-results">
+                      <div class="no-results-icon">🔍</div>
+                      <h3>該当する受講生が見つかりません</h3>
+                      <p>検索条件を変更してお試しください</p>
+                  </div>
+              `;
+          }
+          return;
+      }
+
+      console.log('カード生成中:', filteredData.length, '件');
+      container.innerHTML = filteredData.map(studentDetail => {
+          const student = studentDetail.student;
+          const courses = studentDetail.studentsCourseList || [];
+          const initials = student.name ? student.name.charAt(0) : '？';
+
+          return `
+              <div class="student-card">
+                  <div class="student-header">
+                      <div class="student-avatar">${initials}</div>
+                      <div class="student-basic">
+                          <div class="student-name">${student.name || '未設定'}</div>
+                          <div class="student-id">ID: ${student.id}</div>
+                      </div>
+                      <div class="status-badge ${student.isDeleted ? 'status-deleted' : 'status-active'}">
+                          ${student.isDeleted ? '削除済' : 'アクティブ'}
+                      </div>
+                  </div>
+
+                  <div class="student-details">
+                      <div class="detail-item">
+                          <span class="detail-label">📧</span>
+                          <span class="detail-value">${student.email || '未設定'}</span>
+                      </div>
+                      <div class="detail-item">
+                          <span class="detail-label">📍</span>
+                          <span class="detail-value">${student.area || '未設定'}</span>
+                      </div>
+                      <div class="detail-item">
+                          <span class="detail-label">🎂</span>
+                          <span class="detail-value">${student.age || 0}歳</span>
+                      </div>
+                      <div class="detail-item">
+                          <span class="detail-label">👤</span>
+                          <span class="detail-value">${student.sex || '未設定'}</span>
+                      </div>
+                  </div>
+
+                  ${student.nickName ? `
+                      <div class="detail-item" style="margin-top: 0.5rem;">
+                          <span class="detail-label">ニックネーム:</span>
+                          <span class="detail-value">${student.nickName}</span>
+                      </div>
+                  ` : ''}
+
+                  ${student.remark ? `
+                      <div class="detail-item" style="margin-top: 0.5rem;">
+                          <span class="detail-label">備考:</span>
+                          <span class="detail-value">${student.remark}</span>
+                      </div>
+                  ` : ''}
+
+                  ${courses.length > 0 ? `
+                      <div class="courses-section">
+                          <div class="courses-title">受講コース (${courses.length})</div>
+                          <div class="course-tags">
+                              ${courses.map(course => `
+                                  <span class="course-tag">${course.courseName || 'コース名未設定'}</span>
+                              `).join('')}
+                          </div>
+                      </div>
+                  ` : ''}
+
+                  <div class="card-actions">
+                      <button class="btn-small btn-view" onclick="viewStudent('${student.id}')">詳細</button>
+                      <button class="btn-small btn-edit" onclick="editStudent('${student.id}')">編集</button>
+                  </div>
+              </div>
+          `;
+      }).join('');
+  }
+
+  function updateStatistics() {
+      const total = studentsData.length;
+      const active = studentsData.filter(s => !s.student.isDeleted).length;
+      const totalCourses = studentsData.reduce((sum, s) => sum + (s.studentsCourseList?.length || 0), 0);
+      const avgAge = total > 0 ? Math.round(studentsData.reduce((sum, s) => sum + (s.student.age || 0), 0) / total) : 0;
+
+      document.getElementById('totalStudents').textContent = total;
+      document.getElementById('activeStudents').textContent = active;
+      document.getElementById('totalCourses').textContent = totalCourses;
+      document.getElementById('avgAge').textContent = avgAge;
+  }
+
+  function applyFilters() {
+      console.log('フィルター適用開始');
+      const nameFilter = document.getElementById('searchName').value.toLowerCase().trim();
+      const emailFilter = document.getElementById('searchEmail').value.toLowerCase().trim();
+      const areaFilter = document.getElementById('searchArea').value.toLowerCase().trim();
+      const ageFilter = document.getElementById('searchAge').value;
+      const sexFilter = document.getElementById('searchSex').value;
+      const courseFilter = document.getElementById('searchCourse').value.toLowerCase().trim();
+
+      console.log('フィルター条件:', {
+          nameFilter,
+          emailFilter,
+          areaFilter,
+          ageFilter,
+          sexFilter,
+          courseFilter
+      });
+
+      filteredData = studentsData.filter(studentDetail => {
+          const student = studentDetail.student;
+          const courses = studentDetail.studentsCourseList || [];
+
+          // 名前フィルター
+          if (nameFilter && (!student.name || !student.name.toLowerCase().includes(nameFilter))) {
+              return false;
+          }
+
+          // メールフィルター
+          if (emailFilter && (!student.email || !student.email.toLowerCase().includes(emailFilter))) {
+              return false;
+          }
+
+          // 地域フィルター
+          if (areaFilter && (!student.area || !student.area.toLowerCase().includes(areaFilter))) {
+              return false;
+          }
+
+          // 年齢フィルター
+          if (ageFilter) {
+              const age = student.age || 0;
+              switch (ageFilter) {
+                  case '18-25':
+                      if (age < 18 || age > 25) return false;
+                      break;
+                  case '26-35':
+                      if (age < 26 || age > 35) return false;
+                      break;
+                  case '36-45':
+                      if (age < 36 || age > 45) return false;
+                      break;
+                  case '46+':
+                      if (age < 46) return false;
+                      break;
+              }
+          }
+
+          // 性別フィルター
+          if (sexFilter && student.sex !== sexFilter) {
+              return false;
+          }
+
+          // コースフィルター
+          if (courseFilter) {
+              const hasMatchingCourse = courses.some(course =>
+                  course.courseName && course.courseName.toLowerCase().includes(courseFilter)
+              );
+              if (!hasMatchingCourse) return false;
+          }
+
+          return true;
+      });
+
+      console.log('フィルター結果:', filteredData.length, '件');
+      renderStudentCards();
+  }
+
+  function clearFilters() {
+      document.getElementById('searchName').value = '';
+      document.getElementById('searchEmail').value = '';
+      document.getElementById('searchArea').value = '';
+      document.getElementById('searchAge').value = '';
+      document.getElementById('searchSex').value = '';
+      document.getElementById('searchCourse').value = '';
+
+      filteredData = [...studentsData];
+      renderStudentCards();
+  }
+
+  function viewStudent(id) {
+      window.location.href = `/student/${id}`;
+  }
+
+  function editStudent(id) {
+      // 編集画面への遷移（実装に応じて調整）
+      window.location.href = `/updateStudent?id=${id}`;
+  }
+
+  // リアルタイム検索（入力時に即座に反映）
+  function setupRealtimeSearch() {
+      const searchFields = [
+          'searchName',
+          'searchEmail',
+          'searchArea',
+          'searchCourse'
+      ];
+
+      searchFields.forEach(fieldId => {
+          const field = document.getElementById(fieldId);
+          if (field) {
+              field.addEventListener('input', function() {
+                  console.log(`${fieldId}で検索: ${this.value}`);
+                  applyFilters();
+              });
+          }
+      });
+
+      // セレクトボックスの変更イベント
+      const selectFields = ['searchAge', 'searchSex'];
+      selectFields.forEach(fieldId => {
+          const field = document.getElementById(fieldId);
+          if (field) {
+              field.addEventListener('change', function() {
+                  console.log(`${fieldId}で検索: ${this.value}`);
+                  applyFilters();
+              });
+          }
+      });
+  }
+</script>
+</body>
+</html>-card {
+background: white;
+border-radius: 16px;
+padding: 1.5rem;
+box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+transition: all 0.3s ease;
+position: relative;
+overflow: hidden;
+}
+
+.student
