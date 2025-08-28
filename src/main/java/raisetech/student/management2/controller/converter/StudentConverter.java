@@ -24,18 +24,8 @@ public class StudentConverter {
    */
   public List<StudentDetail> convertStudentDetails(List<Student> studentList,
       List<StudentsCourse> studentCourseList) {
-    List<StudentDetail> studentDetails = new ArrayList<>();
-    //生徒詳細リストを生成
-    //生徒詳細を生成
-    //生徒詳細に生徒をセット
-    //convert生徒コースリストを生成
-    //下の行コーディングsが怪しい
-    //生徒IDとコースの生徒IDが一致したら
-    //生徒コースリストにコースを追加??
-    //下何やってるって？
-    //生徒詳細にconvert生徒コースリストをセット
-    //生徒詳細リストに生徒詳細を追加
-    studentList.forEach(student -> {
+      List<StudentDetail> studentDetails = new ArrayList<>();
+      studentList.forEach(student -> {
       StudentDetail studentDetail = new StudentDetail();
       studentDetail.setStudent(student);
 
@@ -52,3 +42,12 @@ public class StudentConverter {
   }
 
 }
+//生徒詳細リストを生成
+//生徒詳細を生成
+//生徒詳細に生徒をセット
+//convert生徒コースリストを生成
+//下の行コーディングsが怪しい
+//生徒IDとコースの生徒IDが一致したら
+//生徒コースリストにコースを追加??
+//生徒詳細にconvert生徒コースリストをセット
+//生徒詳細リストに生徒詳細を追加

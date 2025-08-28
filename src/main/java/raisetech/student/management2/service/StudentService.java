@@ -3,6 +3,7 @@ package raisetech.student.management2.service;
 import static java.time.LocalDate.now;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,27 +116,52 @@ import raisetech.student.management2.repository.StudentRepository;
    * 受講生コース情報の登録を行う
    * @param studentsCourse 受講生コース情報
    */
+//  @Transactional
+//  public void registerStudentCourse (StudentsCourse studentsCourse){
+//    Date now = Date.valueOf(now());
+//    if (studentsCourse == null) {
+//      throw new IllegalArgumentException("studentsCourse は必須です");
+//    }
+//
+//    //ダミー出力
+//    System.out.println("受講生コース情報の登録を行います");
+//    studentsCourse.setCourseStartAt(now);
+//    studentsCourse.setCourseEndAt(Date.valueOf(now().plusYears(1)));
+//
+//    //コース名が重複していた場合エラー表示で中止
+//    if (repository.searchStudentCourse(studentsCourse.getStudentId())
+//        .stream()
+//        .anyMatch(course -> course.getCourseName().equals(studentsCourse.getCourseName()))) {
+//      throw new IllegalArgumentException("コース名が重複しています");
+//    }
+//    //コース名が重複していない場合は登録
+//    repository.registerStudentCourse(studentsCourse);
+//  }
+
   @Transactional
   public void registerStudentCourse (StudentsCourse studentsCourse){
-    Date now = Date.valueOf(now());
+    Date now = Date.valueOf(LocalDate.now());
     if (studentsCourse == null) {
       throw new IllegalArgumentException("studentsCourse は必須です");
     }
 
-    //ダミー出力
     System.out.println("受講生コース情報の登録を行います");
     studentsCourse.setCourseStartAt(now);
-    studentsCourse.setCourseEndAt(Date.valueOf(now().plusYears(1)));
+    studentsCourse.setCourseEndAt(Date.valueOf(LocalDate.now().plusYears(1)));
 
-    //コース名が重複していた場合エラー表示で中止
-    if (repository.searchStudentCourse(studentsCourse.getStudentId())
-        .stream()
-        .anyMatch(course -> course.getCourseName().equals(studentsCourse.getCourseName()))) {
+    List<StudentsCourse> existingCourses = repository.searchStudentCourse(studentsCourse.getStudentId());
+    System.out.println("既存コース: " + existingCourses);
+
+    boolean duplicated = existingCourses.stream()
+        .anyMatch(course -> course.getCourseName().trim().equalsIgnoreCase(studentsCourse.getCourseName().trim()));
+
+    if (duplicated) {
       throw new IllegalArgumentException("コース名が重複しています");
     }
-    //コース名が重複していない場合は登録
+
     repository.registerStudentCourse(studentsCourse);
   }
+
 
     /**
      * 受講生詳細の更新を行う
