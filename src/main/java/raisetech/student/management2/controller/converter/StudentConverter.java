@@ -29,16 +29,23 @@ public class StudentConverter {
       StudentDetail studentDetail = new StudentDetail();
       studentDetail.setStudent(student);
 
+        List<StudentsCourse> convertStudentCourseList = getStudentsCourseList(
+            studentCourseList, student);
 
-      List<StudentsCourse> convertStudentCourseList = studentCourseList.stream()
-          .filter(course -> student.getId().equals(course.getStudentId()))
-          .collect(Collectors.toList());
-
-
-      studentDetail.setStudentsCourseList(convertStudentCourseList);
+        studentDetail.setStudentsCourseList(convertStudentCourseList);
       studentDetails.add(studentDetail);
     });
     return studentDetails;
+  }
+
+
+  //メソッド抽出
+  private static List<StudentsCourse> getStudentsCourseList(List<StudentsCourse> studentCourseList,
+      Student student) {
+    List<StudentsCourse> convertStudentCourseList = studentCourseList.stream()
+        .filter(course -> student.getId().equals(course.getStudentId()))
+        .collect(Collectors.toList());
+    return convertStudentCourseList;
   }
 
 }

@@ -116,7 +116,7 @@ public class StudentConverterTest {
       List<Student> studentList = Collections.emptyList();
       StudentsCourse dummyCourse = new StudentsCourse(); // ダミーコースを生成
       dummyCourse.setId("C003");
-      dummyCourse.setCourseName("Ruby");
+      dummyCourse.setCourseName("Ruby基礎");
       dummyCourse.setStudentId("S004");
       List<StudentsCourse> studentCourseList = List.of(dummyCourse);
 
