@@ -24,37 +24,21 @@ public class StudentConverter {
    */
   public List<StudentDetail> convertStudentDetails(List<Student> studentList,
       List<StudentsCourse> studentCourseList) {
-      List<StudentDetail> studentDetails = new ArrayList<>();
-      studentList.forEach(student -> {
+    List<StudentDetail> studentDetails = new ArrayList<>();
+    studentList.forEach(student -> {
       StudentDetail studentDetail = new StudentDetail();
       studentDetail.setStudent(student);
 
-        List<StudentsCourse> convertStudentCourseList = getStudentsCourseList(
-            studentCourseList, student);
 
-        studentDetail.setStudentsCourseList(convertStudentCourseList);
+      List<StudentsCourse> convertStudentCourseList = studentCourseList.stream()
+          .filter(course -> student.getId().equals(course.getStudentId()))
+          .collect(Collectors.toList());
+
+
+      studentDetail.setStudentsCourseList(convertStudentCourseList);
       studentDetails.add(studentDetail);
     });
     return studentDetails;
   }
 
-
-  //メソッド抽出
-  private static List<StudentsCourse> getStudentsCourseList(List<StudentsCourse> studentCourseList,
-      Student student) {
-    List<StudentsCourse> convertStudentCourseList = studentCourseList.stream()
-        .filter(course -> student.getId().equals(course.getStudentId()))
-        .collect(Collectors.toList());
-    return convertStudentCourseList;
-  }
-
 }
-//生徒詳細リストを生成
-//生徒詳細を生成
-//生徒詳細に生徒をセット
-//convert生徒コースリストを生成
-//下の行コーディングsが怪しい
-//生徒IDとコースの生徒IDが一致したら
-//生徒コースリストにコースを追加??
-//生徒詳細にconvert生徒コースリストをセット
-//生徒詳細リストに生徒詳細を追加
