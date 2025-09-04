@@ -9,14 +9,17 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Size;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.ErrorResponse;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import raisetech.student.management2.data.MessageResponse;
 import raisetech.student.management2.data.StudentsCourse;
@@ -27,8 +30,15 @@ import raisetech.student.management2.exception.StudentNotFoundException;
 import raisetech.student.management2.service.StudentService;
 
 /**
- * 受講生の検索や登録、更新等を行うREST APIとして実行するコントローラ
+ * 受講生の検索や登録、更新等を行うREST APIとして実行す
+ * るコントローラ
  */
+@CrossOrigin(
+    origins = {"http://localhost:3000", "http://127.0.0.1:3000"},
+    methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE},
+    allowedHeaders = "*"
+
+)
 
 @Validated
 @RestController
@@ -83,11 +93,6 @@ public class StudentController {
     // サービス層で受講生を検索
     StudentDetail student = service.searchStudent(id);
 
-    // 404 Not Found のチェック
-//    if (student == null) {
-//      throw new StudentNotFoundException("指定されたIDの受講生は存在しません");
-//    }
-
     return student;
   }
 //難しい箇所:AIツールの使い方
@@ -98,7 +103,7 @@ public class StudentController {
    */
   @Operation(summary = "コース一覧検索", description = "コース一覧検索をします", responses =
       {@ApiResponse(responseCode = "200", description = "コース一覧が表示される", content = @Content(mediaType = "application/json", schema = @Schema(implementation = StudentsCourse.class))),
-          @ApiResponse(responseCode = "500", description = "サーバーエラー", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
+       @ApiResponse(responseCode = "500", description = "サーバーエラー", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
       })
   @GetMapping("/courseList")
   public List<StudentsCourse> getCourseList () {
@@ -135,7 +140,7 @@ public class StudentController {
           @ApiResponse(responseCode = "400", description = "入力が不適切です", content = @Content(mediaType = "application/json" , schema = @Schema(implementation = ErrorResponse.class))),
           @ApiResponse(responseCode = "500", description = "サーバーエラー", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))})
   @PostMapping("/addCourse")
-  public ResponseEntity<MessageResponse> registerStudentCourse (@RequestBody StudentsCourse
+  public ResponseEntity<MessageResponse> registerStudentCourse (@Valid @RequestBody StudentsCourse
       studentsCourse){
     service.registerStudentCourse(studentsCourse);
     return ResponseEntity.ok(new MessageResponse("登録を実行しました"));
@@ -163,6 +168,18 @@ public class StudentController {
 
     return ResponseEntity.ok(new MessageResponse("更新を実行しました"));
   }
+
+  /**
+   *受講生詳細のパラメータがない場合の処理
+   * @return エラーメッセージ
+   */
+  @GetMapping({"/student","/student/"})
+  public ResponseEntity<String> getStudentWithoutId() {
+    return ResponseEntity
+        .status(HttpStatus.BAD_REQUEST)
+        .body("このAPIは現在利用できません。古いURLとなっています。");
+  }
+
 
   /**
    * idからコース情報を取得します。
