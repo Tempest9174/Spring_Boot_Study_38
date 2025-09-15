@@ -34,14 +34,14 @@
 
   <!--受講生の登録-->
   <insert id="registerStudent" parameterType="raisetech.student.management2.data.Student" useGeneratedKeys="true" keyProperty="id">
-  INSERT INTO students(name, kana_name, nickname, email, area, age, sex, remark, isDeleted)
+  INSERT INTO students(name, kana_name, nickname, email, area, age, sex, remark, is_Deleted)
   values( #{name},  #{kanaName}, #{nickName},#{email}, #{area}, #{age}, #{sex}, #{remark}, false)
   </insert>
 
 
   <!--受講生情報の更新-->
   <update id="updateStudent" parameterType="raisetech.student.management2.data.Student">
-  UPDATE students SET name = #{name}, kana_name = #{kanaName}, nickname = #{nickName}, email = #{email}, area = #{area}, age = #{age}, sex = #{sex}, remark = #{remark}, isDeleted = #{isDeleted}
+  UPDATE students SET name = #{name}, kana_name = #{kanaName}, nickname = #{nickName}, email = #{email}, area = #{area}, age = #{age}, sex = #{sex}, remark = #{remark}, is_Deleted = #{isDeleted}
   WHERE id = #{id}
   </update>
 

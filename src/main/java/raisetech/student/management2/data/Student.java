@@ -57,9 +57,5 @@ public class Student {
   @Schema(description = "削除フラグ（true = 論理削除）", example = "false")
   private boolean isDeleted;
 
-  //public Student(String number, String 佐藤太郎, String さとうたろう, String タロ, String mail,
-  //    String 東京, int i, String 男性, String s,
-  //    boolean b) {
 
-  //}
 }
