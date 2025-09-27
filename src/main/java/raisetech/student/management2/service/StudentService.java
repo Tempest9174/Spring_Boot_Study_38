@@ -178,6 +178,10 @@ import raisetech.student.management2.repository.StudentRepository;
 
 
     }
+    @Transactional(readOnly = true)
+    public List<StudentsCourse> searchStudentCourseList(String studentId){
+      return repository.searchStudentCourse(studentId);
+    }
   }
 
 

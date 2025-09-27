@@ -187,11 +187,12 @@ public class StudentController {
    * @return 実行結果
    */
   @GetMapping("/courseList/{studentId}")
-  public List<StudentsCourse> getCourseList (@PathVariable @Size(min = 1, max = 10) Long studentId)
+  public List<StudentsCourse> getCourseByStudent (@PathVariable @Size(min = 1, max = 10) String studentId)
   {
-    return service.searchCourseList();
+    return service.searchStudentCourseList(studentId);
     //引数消した
   }
   //対応するサービス層がないため有無を言わさず全件検索
+  //TODO対応するサービス層を作成する
 }
 
