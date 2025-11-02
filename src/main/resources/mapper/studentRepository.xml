@@ -28,7 +28,7 @@
 
   <!--新規受講生コース登録   -->
   <insert id="registerStudentCourse" parameterType="raisetech.student.management2.data.StudentsCourse" useGeneratedKeys="true" keyProperty="id">
-    INSERT INTO students_courses (student_id, course_name, course_start_at, course_end_at)
+    INSERT INTO students_course (student_id, course_name, course_start_at, course_end_at)
     VALUES (#{studentId}, #{courseName}, #{courseStartAt}, #{courseEndAt})
   </insert>
 
@@ -48,7 +48,7 @@
 
   <!--受講生コースの更新-->
   <update id="updateStudentCourse" parameterType="raisetech.student.management2.data.StudentsCourse">
-  UPDATE students_courses set course_name = #{courseName} where id = #{id}
+  UPDATE students_course set course_name = #{courseName} where id = #{id}
   </update>
 
 </mapper>

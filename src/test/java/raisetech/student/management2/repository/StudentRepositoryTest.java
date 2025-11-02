@@ -139,22 +139,6 @@ public class StudentRepositoryTest {
   @Test
   void 受講生の情報の更新が正しく行われること(){
     // --- 準備 ---
-//    Student actual = sut.searchStudent("1");
-//    Student student = new Student();
-//    student.setId("1");
-//    student.setName("山田太郎");
-//    student.setKanaName("ヤマダタロウ");
-//    student.setNickName("やまちゃん");
-//    student.setEmail("yamada@gmail.com");
-//    student.setArea("東京");
-//    student.setAge(20);
-//    student.setSex("男性");
-//    student.setRemark("");
-//    student.setDeleted(false);
-//    //--- 実行 ---
-//    //studentの更新を行う
-//    sut.updateStudent(student);
-//    //--- 検証 ---
     Student before = sut.searchStudent("1");
     assertThat(before.getEmail()).isEqualTo("taro@example.com");
 
@@ -181,6 +165,25 @@ public class StudentRepositoryTest {
     assertThat(after.getAge()).isEqualTo(26);
     assertThat(after.getRemark()).isEqualTo("変更後");
   }
+  @Test
+  void 受講生コース情報のコース名更新が正しく行われること(){
+    // --- 準備 ---
+    List<StudentsCourse> beforeList = sut.searchStudentCourse("1");
+    StudentsCourse before = beforeList.get(0);
+    assertThat(before.getCourseName()).isEqualTo("Java基礎講座");
+
+    // --- 実行: 更新処理 ---
+    before.setCourseName("Java応用コース");
+    sut.updateStudentCourse(before);
+
+    // --- 検証: 更新結果を再取得 ---
+    List<StudentsCourse> afterList = sut.searchStudentCourse("1");
+    StudentsCourse after = afterList.get(0);
+
+    assertThat(after.getCourseName()).isEqualTo("Java応用コース");
+  }
+
+  
 
 }
 
