@@ -5,6 +5,15 @@
 `StudentRepository`のMyBatisマッピングとSQLが正しく動作することを確認するRepositoryテストです。
 本番のMySQLには接続せず、テスト実行時だけH2インメモリDBを使用します。
 
+## このPRの対象範囲
+
+このPRで追加するのは、`StudentRepository`を対象としたRepositoryテストと、その実行に必要なH2用SQL・依存関係・GitHub Actions設定のみです。Controller、Service、Converterの実装およびテストは変更対象に含みません。
+
+`StudentConverterTest.java`はすでに`main`ブランチに存在し、今回のブランチでは変更していないため、PRの「Files changed」には表示されません。
+
+- [mainブランチのStudentConverterTest.java](https://github.com/Tempest9174/Spring_Boot_Study_38/blob/main/src/test/java/raisetech/student/management2/controller/converter/StudentConverterTest.java)
+- [mainブランチのStudentConverter.java](https://github.com/Tempest9174/Spring_Boot_Study_38/blob/main/src/main/java/raisetech/student/management2/controller/converter/StudentConverter.java)
+
 ## テスト構成
 
 | ファイル | 役割 |
