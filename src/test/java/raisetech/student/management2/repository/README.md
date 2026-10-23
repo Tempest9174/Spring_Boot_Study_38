@@ -40,6 +40,46 @@
 | 4 | コース名が`null`のコースを登録 | `DataIntegrityViolationException`が発生すること |
 | 5 | 存在しない受講生IDへコースを登録 | 外部キー制約により`DataIntegrityViolationException`が発生すること |
 
+### 1. 存在しない受講生IDを検索するテスト
+
+テストデータに登録されている受講生IDは`1`から`10`までです。`999`はその中に存在しないIDとして、検索結果が0件になる場合を確認するために使用しています。`999`自体に特別な意味はなく、テストデータと重ならない番号であれば同じ目的を果たせます。
+
+```java
+assertNull(repository.searchStudent("999"));
+```
+
+この呼び出しでは、次のSQLが実行されます。
+
+```sql
+SELECT * FROM students WHERE id = 999;
+```
+
+`searchStudent`は受講生1人を`Student`オブジェクトとして返すメソッドです。該当する行が1件もない場合、MyBatisから返る値は`null`になります。そのため、このテストでは例外が発生することではなく、`null`が返ることを`assertNull`で確認しています。
+
+### 2. 存在しない受講生IDのコースを検索するテスト
+
+こちらも、存在しない受講生IDとして`999`を指定します。ただし、検索対象は受講生本人ではなく、その受講生に紐づくコースの一覧です。
+
+```java
+List<StudentsCourse> courses = repository.searchStudentCourse("999");
+assertTrue(courses.isEmpty());
+```
+
+この呼び出しでは、次のSQLが実行されます。
+
+```sql
+SELECT * FROM students_courses WHERE student_id = 999;
+```
+
+`searchStudentCourse`は複数のコースを`List<StudentsCourse>`として返すメソッドです。該当する行が0件の場合は`null`ではなく、要素数0の空リスト`[]`が返ります。そのため、`courses.isEmpty()`が`true`になることを確認しています。
+
+つまり、1番と2番の違いは次のとおりです。
+
+| 検索内容 | 戻り値の型 | 該当データが0件の場合 |
+| --- | --- | --- |
+| 受講生を1人検索 | `Student` | `null` |
+| コースを一覧検索 | `List<StudentsCourse>` | 空リスト`[]` |
+
 ## 実行方法
 
 Windows:
