@@ -23,3 +23,6 @@ VALUES
   (6, 5, 'Python', '2026-06-01', '2027-05-31'),
   (7, 6, 'SQL', '2026-07-01', '2027-06-30');
 
+ALTER TABLE students ALTER COLUMN id RESTART WITH 11;
+ALTER TABLE students_courses ALTER COLUMN id RESTART WITH 8;
+
